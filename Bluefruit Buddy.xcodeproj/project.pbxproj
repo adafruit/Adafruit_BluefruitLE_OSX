@@ -22,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		D214CEE91B7D044300B4E026 /* Details Windows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Details Windows.swift"; sourceTree = "<group>"; };
+		D21B3A891B98EB2E00929DB3 /* ToDo's.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "ToDo's.txt"; sourceTree = "<group>"; };
 		D248B88F1B86DCDB00C6FA82 /* Icon.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = Icon.psd; sourceTree = SOURCE_ROOT; };
 		D248B8901B86DE5B00C6FA82 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		D248B8921B8A6EBC00C6FA82 /* Peripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Peripheral.swift; sourceTree = "<group>"; };
@@ -33,7 +34,6 @@
 		D2C6049F1B69B9AB009A89D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2C604A51B69B9CC009A89D5 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		D2C604A61B69B9CC009A89D5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		D2C604AB1B69FA89009A89D5 /* ToDo's.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "ToDo's.rtf"; sourceTree = "<group>"; };
 		D2C7C9B71B745F5300EE4F3F /* GATT-characteristic-names.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GATT-characteristic-names.plist"; sourceTree = "<group>"; };
 		D2E2BCFF1B712E3D002EC920 /* Device List Handler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device List Handler.swift"; sourceTree = "<group>"; };
 		D2E2BD011B7154A4002EC920 /* Service Discovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Service Discovery.swift"; sourceTree = "<group>"; };
@@ -59,7 +59,7 @@
 				D2C604931B69B9AB009A89D5 /* Sources */,
 				D2C604921B69B9AB009A89D5 /* Products */,
 				D248B88F1B86DCDB00C6FA82 /* Icon.psd */,
-				D2C604AB1B69FA89009A89D5 /* ToDo's.rtf */,
+				D21B3A891B98EB2E00929DB3 /* ToDo's.txt */,
 			);
 			sourceTree = "<group>";
 		};

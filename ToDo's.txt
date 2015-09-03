@@ -1,0 +1,11 @@
+
+- Slow reception if sending ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ several times really fast
+	Slow scrolling after lotsa lines (100+)
+
+- Show RSSI indicator in peripheral list when a peripheral has been selected after 20 seconds
+
+- Small list view icon does not show up in Finder
+
+- Details options selected to persist
+
+- Clean up UUID display (make fully dynamic cell sizes)
