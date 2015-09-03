@@ -1,0 +1,319 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D214CEEA1B7D044300B4E026 /* Details Windows.swift in Sources */ = {isa = PBXBuildFile; fileRef = D214CEE91B7D044300B4E026 /* Details Windows.swift */; };
+		D248B8911B86DE5B00C6FA82 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = D248B8901B86DE5B00C6FA82 /* Credits.rtf */; };
+		D248B8931B8A6EBC00C6FA82 /* Peripheral.swift in Sources */ = {isa = PBXBuildFile; fileRef = D248B8921B8A6EBC00C6FA82 /* Peripheral.swift */; };
+		D2C604951B69B9AB009A89D5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C604941B69B9AB009A89D5 /* AppDelegate.swift */; };
+		D2C604971B69B9AB009A89D5 /* List Window.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2C604961B69B9AB009A89D5 /* List Window.swift */; };
+		D2C6049B1B69B9AB009A89D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2C6049A1B69B9AB009A89D5 /* Assets.xcassets */; };
+		D2C6049E1B69B9AB009A89D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2C6049C1B69B9AB009A89D5 /* Main.storyboard */; };
+		D2C7C9B81B745F5300EE4F3F /* GATT-characteristic-names.plist in Resources */ = {isa = PBXBuildFile; fileRef = D2C7C9B71B745F5300EE4F3F /* GATT-characteristic-names.plist */; };
+		D2E2BD001B712E3D002EC920 /* Device List Handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E2BCFF1B712E3D002EC920 /* Device List Handler.swift */; };
+		D2E2BD021B7154A4002EC920 /* Service Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E2BD011B7154A4002EC920 /* Service Discovery.swift */; };
+		D2E2BD1F1B717515002EC920 /* Utilities & Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E2BD1E1B717515002EC920 /* Utilities & Extensions.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D214CEE91B7D044300B4E026 /* Details Windows.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Details Windows.swift"; sourceTree = "<group>"; };
+		D248B88F1B86DCDB00C6FA82 /* Icon.psd */ = {isa = PBXFileReference; lastKnownFileType = file; path = Icon.psd; sourceTree = SOURCE_ROOT; };
+		D248B8901B86DE5B00C6FA82 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		D248B8921B8A6EBC00C6FA82 /* Peripheral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Peripheral.swift; sourceTree = "<group>"; };
+		D2C604911B69B9AB009A89D5 /* Bluefruit Buddy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bluefruit Buddy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2C604941B69B9AB009A89D5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D2C604961B69B9AB009A89D5 /* List Window.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "List Window.swift"; sourceTree = "<group>"; };
+		D2C6049A1B69B9AB009A89D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D2C6049D1B69B9AB009A89D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D2C6049F1B69B9AB009A89D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D2C604A51B69B9CC009A89D5 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		D2C604A61B69B9CC009A89D5 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D2C604AB1B69FA89009A89D5 /* ToDo's.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = "ToDo's.rtf"; sourceTree = "<group>"; };
+		D2C7C9B71B745F5300EE4F3F /* GATT-characteristic-names.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GATT-characteristic-names.plist"; sourceTree = "<group>"; };
+		D2E2BCFF1B712E3D002EC920 /* Device List Handler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Device List Handler.swift"; sourceTree = "<group>"; };
+		D2E2BD011B7154A4002EC920 /* Service Discovery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Service Discovery.swift"; sourceTree = "<group>"; };
+		D2E2BD1E1B717515002EC920 /* Utilities & Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Utilities & Extensions.swift"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D2C6048E1B69B9AB009A89D5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D2C604881B69B9AB009A89D5 = {
+			isa = PBXGroup;
+			children = (
+				D2C604A51B69B9CC009A89D5 /* LICENSE.txt */,
+				D2C604A61B69B9CC009A89D5 /* README.md */,
+				D2C604931B69B9AB009A89D5 /* Sources */,
+				D2C604921B69B9AB009A89D5 /* Products */,
+				D248B88F1B86DCDB00C6FA82 /* Icon.psd */,
+				D2C604AB1B69FA89009A89D5 /* ToDo's.rtf */,
+			);
+			sourceTree = "<group>";
+		};
+		D2C604921B69B9AB009A89D5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2C604911B69B9AB009A89D5 /* Bluefruit Buddy.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D2C604931B69B9AB009A89D5 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D2C604941B69B9AB009A89D5 /* AppDelegate.swift */,
+				D2C604961B69B9AB009A89D5 /* List Window.swift */,
+				D2E2BCFF1B712E3D002EC920 /* Device List Handler.swift */,
+				D214CEE91B7D044300B4E026 /* Details Windows.swift */,
+				D2E2BD011B7154A4002EC920 /* Service Discovery.swift */,
+				D248B8921B8A6EBC00C6FA82 /* Peripheral.swift */,
+				D2E2BD1E1B717515002EC920 /* Utilities & Extensions.swift */,
+				D2C6049C1B69B9AB009A89D5 /* Main.storyboard */,
+				D2C7C9B71B745F5300EE4F3F /* GATT-characteristic-names.plist */,
+				D2C6049A1B69B9AB009A89D5 /* Assets.xcassets */,
+				D248B8901B86DE5B00C6FA82 /* Credits.rtf */,
+				D2C6049F1B69B9AB009A89D5 /* Info.plist */,
+			);
+			name = Sources;
+			path = "Bluefruit Buddy";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D2C604901B69B9AB009A89D5 /* Bluefruit Buddy */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D2C604A21B69B9AB009A89D5 /* Build configuration list for PBXNativeTarget "Bluefruit Buddy" */;
+			buildPhases = (
+				D2C6048D1B69B9AB009A89D5 /* Sources */,
+				D2C6048E1B69B9AB009A89D5 /* Frameworks */,
+				D2C6048F1B69B9AB009A89D5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Bluefruit Buddy";
+			productName = "BLE Buddy";
+			productReference = D2C604911B69B9AB009A89D5 /* Bluefruit Buddy.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D2C604891B69B9AB009A89D5 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = Adafruit;
+				TargetAttributes = {
+					D2C604901B69B9AB009A89D5 = {
+						CreatedOnToolsVersion = 7.0;
+					};
+				};
+			};
+			buildConfigurationList = D2C6048C1B69B9AB009A89D5 /* Build configuration list for PBXProject "Bluefruit Buddy" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D2C604881B69B9AB009A89D5;
+			productRefGroup = D2C604921B69B9AB009A89D5 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2C604901B69B9AB009A89D5 /* Bluefruit Buddy */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D2C6048F1B69B9AB009A89D5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2C7C9B81B745F5300EE4F3F /* GATT-characteristic-names.plist in Resources */,
+				D2C6049B1B69B9AB009A89D5 /* Assets.xcassets in Resources */,
+				D2C6049E1B69B9AB009A89D5 /* Main.storyboard in Resources */,
+				D248B8911B86DE5B00C6FA82 /* Credits.rtf in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2C6048D1B69B9AB009A89D5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D2E2BD001B712E3D002EC920 /* Device List Handler.swift in Sources */,
+				D248B8931B8A6EBC00C6FA82 /* Peripheral.swift in Sources */,
+				D214CEEA1B7D044300B4E026 /* Details Windows.swift in Sources */,
+				D2C604971B69B9AB009A89D5 /* List Window.swift in Sources */,
+				D2E2BD1F1B717515002EC920 /* Utilities & Extensions.swift in Sources */,
+				D2C604951B69B9AB009A89D5 /* AppDelegate.swift in Sources */,
+				D2E2BD021B7154A4002EC920 /* Service Discovery.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D2C6049C1B69B9AB009A89D5 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D2C6049D1B69B9AB009A89D5 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D2C604A01B69B9AB009A89D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		D2C604A11B69B9AB009A89D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D2C604A31B69B9AB009A89D5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Bluefruit Buddy/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "adafruit.Bluefruit-Buddy";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		D2C604A41B69B9AB009A89D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Bluefruit Buddy/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = "adafruit.Bluefruit-Buddy";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D2C6048C1B69B9AB009A89D5 /* Build configuration list for PBXProject "Bluefruit Buddy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2C604A01B69B9AB009A89D5 /* Debug */,
+				D2C604A11B69B9AB009A89D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D2C604A21B69B9AB009A89D5 /* Build configuration list for PBXNativeTarget "Bluefruit Buddy" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D2C604A31B69B9AB009A89D5 /* Debug */,
+				D2C604A41B69B9AB009A89D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D2C604891B69B9AB009A89D5 /* Project object */;
+}
