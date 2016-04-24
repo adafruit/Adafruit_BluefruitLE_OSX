@@ -167,12 +167,14 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 	// When all Services have been queried, disconnect from the Peripheral to allow it to advertise again
 	func advance(peripheral: CBPeripheral) {
 		
-		if ++characteristicIdx < allCharacteristicsForService.count {											// Next Charactertistic
+		characteristicIdx += 1
+		if characteristicIdx < allCharacteristicsForService.count {												// Next Charactertistic
 			handleValueAquisitionForCharacteristic(peripheral, characteristic: allCharacteristicsForService[characteristicIdx])
 			return
 		}
 		
-		if ++serviceIdx < allServices.count {																	// If more services, discover the Characteristics
+		serviceIdx += 1
+		if serviceIdx < allServices.count {																		// If more services, discover the Characteristics
 			handleCharacteristicDiscoveryForService(peripheral, aService: allServices[serviceIdx])
 			return
 		}
@@ -205,13 +207,13 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 		
 		delayRunOnMainQ(0) {																					// Timers MUST be instantiated on the main thread
 			self.disableTimer?.invalidate()
-			self.disableTimer = NSTimer.scheduledTimerWithTimeInterval(self.rememberedSeconds, target: self, selector: "disablePeripheral", userInfo: nil, repeats: false)
+			self.disableTimer = NSTimer.scheduledTimerWithTimeInterval(self.rememberedSeconds, target: self, selector: #selector(Peripheral.disablePeripheral), userInfo: nil, repeats: false)
 		}
 		
 	}
 	
 	
-	/* private */ func disablePeripheral() {																	// NSTimer selectors can't be private {:~(
+	/* private */ func disablePeripheral() {																	// NSTimer target functions can't be private {:~(
 		
 		deviceDisabled = true
 		RSSI = 127																								// Indicate to show n/a for RSSI
