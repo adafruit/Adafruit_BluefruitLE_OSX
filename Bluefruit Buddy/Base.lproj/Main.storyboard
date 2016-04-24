@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="8187.4" systemVersion="14F27" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="jGA-0Y-lOj">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15F24b" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="jGA-0Y-lOj">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8187.4"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10116"/>
         <capability name="box content view" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
@@ -261,7 +261,7 @@
                                             </connections>
                                         </button>
                                         <button horizontalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="fnx-YK-ZHi">
-                                            <rect key="frame" x="18" y="23" width="124" height="18"/>
+                                            <rect key="frame" x="18" y="23" width="123" height="18"/>
                                             <string key="toolTip">Enable to see typed text in the text box above. When disabled, typed text is not shown in the text box but is transmitted to the BLE peripheral one character at a time as it is typed</string>
                                             <buttonCell key="cell" type="check" title="Echo Typed Text" bezelStyle="regularSquare" imagePosition="left" alignment="left" enabled="NO" state="on" inset="2" id="u2k-lf-Vwb">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -272,7 +272,7 @@
                                             </connections>
                                         </button>
                                         <button translatesAutoresizingMaskIntoConstraints="NO" id="gWS-kl-3Bz">
-                                            <rect key="frame" x="341" y="8" width="101" height="18"/>
+                                            <rect key="frame" x="343" y="8" width="99" height="18"/>
                                             <string key="toolTip">Enable to receive text by way of the Rx Characteristic notification. When off, the Mac is never notified nor displays received text, however text is still transmitted</string>
                                             <buttonCell key="cell" type="check" title="Receive Text" bezelStyle="regularSquare" imagePosition="left" enabled="NO" state="on" inset="2" id="W9u-M6-ZPK">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -283,7 +283,7 @@
                                             </connections>
                                         </button>
                                         <button translatesAutoresizingMaskIntoConstraints="NO" id="6Bg-HF-Ryw">
-                                            <rect key="frame" x="18" y="76" width="149" height="18"/>
+                                            <rect key="frame" x="18" y="76" width="145" height="18"/>
                                             <string key="toolTip">Enable to send typed text when the RETURN key is pressed. The Send button works as usual too. When disabled, pressing RETURN does not automatically send typed text. The return character behaves like any other character</string>
                                             <buttonCell key="cell" type="check" title="RETURN Sends Text" bezelStyle="regularSquare" imagePosition="left" enabled="NO" state="on" inset="2" id="8m3-qe-fZ6">
                                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
@@ -344,7 +344,7 @@
                                             </scroller>
                                         </scrollView>
                                         <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ktv-ds-Nfl">
-                                            <rect key="frame" x="373" y="31" width="73" height="32"/>
+                                            <rect key="frame" x="374" y="31" width="72" height="32"/>
                                             <buttonCell key="cell" type="push" title="Clear" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Vqf-rv-hZa">
                                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="system"/>

@@ -117,7 +117,9 @@ extension String {
 	}
 	
 	subscript (r: Range<Int>) -> String {
-		return substringWithRange(Range(start: startIndex.advancedBy(r.startIndex), end: startIndex.advancedBy(r.endIndex)))
+		let startI = startIndex.advancedBy(r.startIndex)
+		let endI = startIndex.advancedBy(r.endIndex)
+		return substringWithRange(startI..<endI)
 	}
 	
 	
@@ -125,14 +127,16 @@ extension String {
 	func hexToPrintableString() -> String {
 		
 		let validHex = self.lowercaseString.characters.filter() {													// Strip out any non-hex characters
-			return ($0 >= "a" && $0 <= "f") || ($0 >= "0" && $0 <= "9")
+			let alpha = ($0 >= "a" && $0 <= "f")																	// XC 7.3 / Swift 2.2 complains when these 3 lines are combined
+			let numeric = ($0 >= "0" && $0 <= "9")
+			return alpha || numeric
 		}
 		let validHexStr = String(validHex)
 		
 		if validHexStr.characters.count % 2 == 1 { return "" }														// Must be an even number of hex characters
 		
 		var printableString = ""
-		for var i = 0; i < validHexStr.characters.count; i += 2 {													// Convert 2 consecutive characters
+		for i in 0.stride(to: validHexStr.characters.count, by: 2) {												// Convert 2 consecutive characters
 			let v = Int(validHexStr[i...i+1], radix: 16)!
 			printableString += UnicodeScalar(v).escape(asASCII: true)
 		}
