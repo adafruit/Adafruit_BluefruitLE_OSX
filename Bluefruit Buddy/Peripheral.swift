@@ -257,23 +257,22 @@ extension Peripheral.GATT {
                         return "\(aServ.uuid.characteristicName)"
                         
                 case let .characteristic(aChar):
-                        if aChar.properties.contains(.read) {
-                                // Show the data if this Characteristic allowed reading
-                                let valueString: String
-                                if aChar.uuid == CBUUID.DFUVersion {
-                                        // Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
-                                        valueString = aChar.value!.description
-                                } else {
-                                        // Otherwise print the UTF-8 string
-                                        var byteString = "n/a"; if let value = aChar.value { byteString = value.description }
-                                        valueString = byteString.hexToPrintableString()
-                                }
-                                
-                                return "    \(aChar.uuid.characteristicName) \"\(valueString)\""
-                        } else {
+                        guard aChar.properties.contains(.read) else {
                                 // Doesn't allow reading so print characteristic name only
                                 return "    \(aChar.uuid.characteristicName)"
                         }
+                        
+                        let valueString: String
+                        if aChar.uuid == CBUUID.DFUVersion {
+                                // Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
+                                valueString = aChar.value!.description
+                        } else {
+                                // Otherwise print the UTF-8 string
+                                var byteString = "n/a"; if let value = aChar.value { byteString = value.description }
+                                valueString = byteString.hexToPrintableString()
+                        }
+                        
+                        return "    \(aChar.uuid.characteristicName) \"\(valueString)\""
                 }
         }
 }
