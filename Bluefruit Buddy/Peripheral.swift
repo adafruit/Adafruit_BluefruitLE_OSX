@@ -221,11 +221,11 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 	}
 	
 	
-	func supportsService(_ uuidString: String) -> Bool {
+	func supports(service uuid: CBUUID) -> Bool {
 		
 		if self.displayGATT.index(where: {
 			switch $0 {																							// Syntactically unattractive, but amazing how Swift does the magic
-			case let .service(aServ): if aServ.uuid.uuidString == uuidString { return true }
+			case let .service(aServ): if aServ.uuid == uuid { return true }
 			case .characteristic(_): return false
 			}
 			return false

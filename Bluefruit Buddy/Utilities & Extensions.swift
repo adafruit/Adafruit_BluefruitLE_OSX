@@ -86,13 +86,11 @@ extension CBUUID {
 	
 	
 	// Some needed UUID constants as defined in GATT-characteristic-names.plist
-	enum UUIDs: String {
-		case UARTService = "6E400001-B5A3-F393-E0A9-E50E24DCCA9E"
-		case UARTTxCharacteristic = "6E400002-B5A3-F393-E0A9-E50E24DCCA9E"
-		case UARTRxCharacteristic = "6E400003-B5A3-F393-E0A9-E50E24DCCA9E"
-		case DFUService = "00001530-1212-EFDE-1523-785FEABCD123"
-		case DFUVersion = "00001534-1212-EFDE-1523-785FEABCD123"
-	}
+        static let UARTService = CBUUID(string: "6E400001-B5A3-F393-E0A9-E50E24DCCA9E")
+        static let UARTTxCharacteristic = CBUUID(string: "6E400002-B5A3-F393-E0A9-E50E24DCCA9E")
+        static let UARTRxCharacteristic = CBUUID(string: "6E400003-B5A3-F393-E0A9-E50E24DCCA9E")
+        static let DFUService = CBUUID(string: "00001530-1212-EFDE-1523-785FEABCD123")
+        static let DFUVersion = CBUUID(string: "00001534-1212-EFDE-1523-785FEABCD123")
 	
 }
 

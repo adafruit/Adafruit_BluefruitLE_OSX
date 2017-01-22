@@ -125,7 +125,7 @@ class DeviceListHandler: NSObject, NSTableViewDataSource, NSTableViewDelegate, B
 						if allowsReading {																						// Show the data if this Characteristic allowed reading
 							
 							let valueString: String
-							if aChar.uuid.uuidString == CBUUID.UUIDs.DFUVersion.rawValue {										// Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
+							if aChar.uuid == CBUUID.DFUVersion {										// Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
 								valueString = aChar.value!.description
 							} else {																							// Otherwise print the UTF-8 string
 								var byteString = "n/a"; if let value = aChar.value { byteString = value.description }

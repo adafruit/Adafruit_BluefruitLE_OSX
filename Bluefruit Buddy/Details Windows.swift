@@ -89,8 +89,8 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 		
 		super.viewWillAppear()
 		
-		UARTTextArea.isHidden = !device.supportsService(CBUUID.UUIDs.UARTService.rawValue)										// Check for a (Nordic) UART Service & show the UART text area if it exists
-		firmwareUpdateButton.isHidden = !device.supportsService(CBUUID.UUIDs.DFUService.rawValue)									// Check for Firmware Update Service & show firmware update button
+                UARTTextArea.isHidden = !device.supports(service: CBUUID.UARTService)										// Check for a (Nordic) UART Service & show the UART text area if it exists
+                firmwareUpdateButton.isHidden = !device.supports(service: CBUUID.DFUService)									// Check for Firmware Update Service & show firmware update button
 		
 		noServicesText.isHidden = !(UARTTextArea.isHidden && firmwareUpdateButton.isHidden)											// If we don't recognize any services, show "Supported Services Not Found"
 		
@@ -198,7 +198,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	func centralManagerDidUpdateState(_ manager: CBCentralManager) {
 	
 		if manager.state == .poweredOn {
-			let desiredServices = [CBUUID(string: CBUUID.UUIDs.UARTService.rawValue)]
+			let desiredServices = [CBUUID.UARTService]
 			// The CBCentralManagerScanOptionAllowDuplicatesKey parameter doesn't seem to have any effect (on 10.10.5) but set here as needed anyway
 			manager.scanForPeripherals(withServices: desiredServices, options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])	// Find only one occurance when advertised. Chains to didDiscoverPeripheral
 		} else {
@@ -235,7 +235,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 		
 		if verboseConsoleLog { NSLog("didConnectPeripheral: peripheral=\(peripheral)") }
 		
-		peripheral.discoverServices([CBUUID(string: CBUUID.UUIDs.UARTService.rawValue)])										// Chains to didDiscoverServices
+		peripheral.discoverServices([CBUUID.UARTService])										// Chains to didDiscoverServices
 		
 	}
 	
@@ -281,7 +281,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 		if error == nil {
 			
 			for aService in peripheral.services! {																				// Should be only 1 service - the one we asked for above
-				let desiredCharacteristics = [CBUUID(string: CBUUID.UUIDs.UARTTxCharacteristic.rawValue), CBUUID(string: CBUUID.UUIDs.UARTRxCharacteristic.rawValue)]
+				let desiredCharacteristics = [CBUUID.UARTTxCharacteristic, CBUUID.UARTRxCharacteristic]
 				peripheral.discoverCharacteristics(desiredCharacteristics, for: aService)								// Chains to didDiscoverCharacteristicsForService
 			}
 			
@@ -298,9 +298,9 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 		if verboseConsoleLog { NSLog("didDiscoverCharacteristicsForService: peripheral=\(peripheral), service=\(service)"); if error != nil { NSLog("ERROR=\(error!)") } }
 		
 		for aCharacteristic in service.characteristics! {
-			if aCharacteristic.uuid.uuidString == CBUUID.UUIDs.UARTRxCharacteristic.rawValue {
+			if aCharacteristic.uuid == CBUUID.UARTRxCharacteristic {
 				UARTRxCharacteristic = aCharacteristic
-			} else if aCharacteristic.uuid.uuidString == CBUUID.UUIDs.UARTTxCharacteristic.rawValue {
+			} else if aCharacteristic.uuid == CBUUID.UARTTxCharacteristic {
 				UARTTxCharacteristic = aCharacteristic
 			}
 		}
@@ -319,7 +319,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 			if error != nil { NSLog("ERROR=\(error!)") }
 		}
 		
-		if characteristic.uuid.uuidString == CBUUID.UUIDs.UARTRxCharacteristic.rawValue {											// Check to make sure this is our receive Characteristic. Should always pass
+		if characteristic.uuid == CBUUID.UARTRxCharacteristic {											// Check to make sure this is our receive Characteristic. Should always pass
 			if let value = characteristic.value {																					// And check to make sure we have valid data. Should also always pass
 				
 				if verboseConsoleLog { let crText = value.description.replacingOccurrences(of: "\n", with: "•"); NSLog("receiving \"\(crText)\"") }
