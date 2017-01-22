@@ -137,3 +137,14 @@ extension String {
         
 }
 
+extension Data {
+        var toASCIIString: String {
+                var printableString = ""
+                for i in stride(from: 0, to: count, by: 1) {
+                        let v = UInt16(self[i])
+                        printableString += (UnicodeScalar(v)?.escaped(asASCII: true))!
+                }
+                
+                return printableString
+        }
+}

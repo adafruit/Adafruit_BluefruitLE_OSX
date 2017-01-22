@@ -268,8 +268,11 @@ extension Peripheral.GATT {
                                 valueString = aChar.value!.description
                         } else {
                                 // Otherwise print the UTF-8 string
-                                var byteString = "n/a"; if let value = aChar.value { byteString = value.description }
-                                valueString = byteString.hexToPrintableString()
+                                if let value = aChar.value {
+                                        valueString = value.toASCIIString
+                                } else {
+                                        valueString = "n/a"
+                                }
                         }
                         
                         return "    \(aChar.uuid.characteristicName) \"\(valueString)\""
