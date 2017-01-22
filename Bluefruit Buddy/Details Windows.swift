@@ -407,26 +407,23 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
                 var writeType = CBCharacteristicWriteType.withoutResponse
                 
                 // If it responds, we'd rather have that
+                // And if it handles neither (not likely), we'll display an error message upon sending
                 // TJW: Was this code intending to check for .withResponse?
 		if UARTTxCharacteristic!.properties.contains(.write) {
 			writeType = .withResponse
-                }
-                
-                // And if it handles neither (not likely), we'll display an error message upon sending
-		var start = 0
+                }                
                 
                 // Send the data in max blocks of 20 chars as per the GATT Characteristic size limit
-		repeat {
-                    abort()
-                    /*
-			var end = start + 19
-			if end >= string.characters.count { end = string.characters.count-1 }
-			let str = string[start..<(end+1)] as NSString
-			let data = Data(bytes: UnsafePointer<UInt8>(str.utf8String!), count: str.length)
-			UARTPeripheral?.writeValue(data, for: UARTTxCharacteristic!, type: writeType)
-			start += 20
- */
-		} while start < string.characters.count
+                // TJW: My change here sends 20 *bytes* at a time instead of 20 characters. It is unclear, since there is no reference to documentation on the limit, if we really could send 20 characters (possibly many, many more bytes for non-ASCII characters). Of course, this means the receiver needs to recombine and validate UTF-8 sequences if they really want non-ASCII (probably should be doing that anyway).
+                let utf8Data = string.data(using: .utf8)!
+                let utf8Length = utf8Data.count
+
+                var sendIndex = 0;
+                while sendIndex < utf8Length {
+                        let sendLength = min(20, utf8Length - sendIndex)
+                        UARTPeripheral?.writeValue(utf8Data.subdata(in: sendIndex..<(sendIndex+sendLength)), for: UARTTxCharacteristic!, type: writeType)
+                        sendIndex += 20
+                }
 		
 	}
 	
