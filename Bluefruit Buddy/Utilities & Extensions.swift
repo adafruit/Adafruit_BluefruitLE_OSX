@@ -93,6 +93,9 @@ extension CBUUID {
         static let DFUVersion = CBUUID(string: "00001534-1212-EFDE-1523-785FEABCD123")
 	
         static let BatteryLevel = CBUUID(string: "2A19")
+        static let CurrentTime = CBUUID(string: "2A2B")
+        
+        static let LocalTimeInfo = CBUUID(string: "2A0F")
 }
 
 

@@ -291,6 +291,28 @@ extension CBCharacteristic {
                         }
                         return "??"
 
+                case CBUUID.CurrentTime:
+                        // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.current_time.xml
+                        
+                        // The current time characterisitic is supposed to be a single byte with four bits (or 255)
+                        // iPhone, at least, is sending back 10 bytes...
+                        if value.count == 1 {
+                                let byte = value[0]
+                                if byte <= 0xf {
+                                        return "\(byte)"
+                                }
+                        }
+                        return "??"
+                        
+                case CBUUID.LocalTimeInfo:
+                        // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.local_time_information.xml
+                        
+                        // A time zone followed by DST offset
+                        if value.count == 2 {
+                                return "\(timeZoneString(byte: value[0])), \(dstString(byte: value[1]))"
+                        }
+                        return "??"
+                        
                 case CBUUID.DFUVersion:
                         // Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
                         return value.description
@@ -298,4 +320,66 @@ extension CBCharacteristic {
                         return value.toASCIIString
                 }
         }
+        
+        // Time zone, as in <https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.time_zone.xml>
+        private func timeZoneString(byte: UInt8) -> String {
+                let tz = Int8(bitPattern: byte)
+                
+                // The pattern of this data is regular enough that we really could code the conversion...
+                switch tz {
+                case -48: return "UTC-12:00"
+                case -44: return "UTC-11:00"
+                case -40: return "UTC-10:00"
+                case -38: return "UTC-9:30"
+                case -36: return "UTC-9:00"
+                case -32: return "UTC-8:00"
+                case -28: return "UTC-7:00"
+                case -24: return "UTC-6:00"
+                case -20: return "UTC-5:00"
+                case -18: return "UTC-4:30"
+                case -16: return "UTC-4:00"
+                case -14: return "UTC-3:30"
+                case -12: return "UTC-3:00"
+                case -8: return "UTC-2:00"
+                case -4: return "UTC-1:00"
+                case 0: return "UTC+0:00"
+                case 4: return "UTC+1:00"
+                case 8: return "UTC+2:00"
+                case 12: return "UTC+3:00"
+                case 14: return "UTC+3:30"
+                case 16: return "UTC+4:00"
+                case 18: return "UTC+4:30"
+                case 20: return "UTC+5:00"
+                case 22: return "UTC+5:30"
+                case 23: return "UTC+5:45"
+                case 24: return "UTC+6:00"
+                case 26: return "UTC+6:30"
+                case 28: return "UTC+7:00"
+                case 32: return "UTC+8:00"
+                case 35: return "UTC+8:45"
+                case 36: return "UTC+9:00"
+                case 38: return "UTC+9:30"
+                case 40: return "UTC+10:00"
+                case 42: return "UTC+10:30"
+                case 44: return "UTC+11:00"
+                case 46: return "UTC+11:30"
+                case 48: return "UTC+12:00"
+                case 51: return "UTC+12:45"
+                case 52: return "UTC+13:00"
+                case 56: return "UTC+14:00"
+                default: return "Unknown TZ"
+                }
+        }
+ 
+        // DST info, as in <https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.dst_offset.xml>
+        private func dstString(byte: UInt8) -> String {
+                switch (byte) {
+                case 0: return "Standard"
+                case 2: return "Half-hour DST"
+                case 4: return "DST"
+                case 8: return "Double DST"
+                default: return "Unknown DST"
+                }
+        }
+
 }
