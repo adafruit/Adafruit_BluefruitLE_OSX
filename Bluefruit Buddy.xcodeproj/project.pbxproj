@@ -61,6 +61,7 @@
 				D248B88F1B86DCDB00C6FA82 /* Icon.psd */,
 				D21B3A891B98EB2E00929DB3 /* ToDo's.txt */,
 			);
+			indentWidth = 8;
 			sourceTree = "<group>";
 		};
 		D2C604921B69B9AB009A89D5 /* Products */ = {
