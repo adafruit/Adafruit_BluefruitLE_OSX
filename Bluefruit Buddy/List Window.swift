@@ -13,10 +13,10 @@ import Cocoa
 
 class ListViewController: NSViewController {
 	
-	@IBOutlet fileprivate var deviceListTableView: NSTableView!
-	@IBOutlet fileprivate var progressIndicator: NSProgressIndicator!
-	@IBOutlet fileprivate var scanningMsg: NSTextField!
-	@IBOutlet fileprivate var deviceListHandler: DeviceListHandler!				// A connection (as set up in IB) to our DeviceListHandler object
+	@IBOutlet private var deviceListTableView: NSTableView!
+	@IBOutlet private var progressIndicator: NSProgressIndicator!
+	@IBOutlet private var scanningMsg: NSTextField!
+	@IBOutlet private var deviceListHandler: DeviceListHandler!				// A connection (as set up in IB) to our DeviceListHandler object
 	
 	var bleComms: ServiceDiscovery!
 	

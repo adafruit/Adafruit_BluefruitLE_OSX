@@ -23,8 +23,8 @@ var foundPeripherals: [Peripheral] = []																			// Array of found devi
 // This kicks off the communications with a BLE peripheral device by searching for whomever is advertising
 class ServiceDiscovery: NSObject, CBCentralManagerDelegate {
 	
-	fileprivate var manager: CBCentralManager!																		// Two-phase initialize manager (since it requires self - define as var)
-	fileprivate let delegate: BLEPeripheralListHandlerDelegate
+	private var manager: CBCentralManager!																		// Two-phase initialize manager (since it requires self - define as var)
+	private let delegate: BLEPeripheralListHandlerDelegate
 	
 	
 	init(delegate: BLEPeripheralListHandlerDelegate) {

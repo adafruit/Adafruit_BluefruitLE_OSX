@@ -27,7 +27,7 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 	
 	var detailsController: DetailsWindowController?																// The details window connected to this Peripheral
 	
-	fileprivate let manager: CBCentralManager
+	private let manager: CBCentralManager
 	let peripheral: CBPeripheral																				// Side note: The UUID identifier is assigned by the Mac and not the actual UUID on the Peripheral. It is not persisted across Mac reboot/power offs
 	let advertisementData: [String : AnyObject]
 	var RSSI: NSNumber {
@@ -38,20 +38,20 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 		}
 	}
 	
-	fileprivate var delegate: BLEPeripheralListHandlerDelegate?
+	private var delegate: BLEPeripheralListHandlerDelegate?
 	var deviceDisabled = true {																					// Start in a disabled (unselectable) state b/c we are about to do a Services lookup
 		didSet {
 			delegate?.refreshPeripheralList()
 		}
 	}
 	
-	fileprivate var rememberedSeconds: TimeInterval = 0
-	fileprivate var disableTimer: Timer?																			// A timer to disable Peripherals in the list that are not continuously reporting advertising packets (and that are not already connect to the Mac)
+	private var rememberedSeconds: TimeInterval = 0
+	private var disableTimer: Timer?																			// A timer to disable Peripherals in the list that are not continuously reporting advertising packets (and that are not already connect to the Mac)
 	
-	fileprivate var allServices: [CBService]!
-	fileprivate var serviceIdx = 0																					// Index into allServices
-	fileprivate var allCharacteristicsForService: [CBCharacteristic]!
-	fileprivate var characteristicIdx = 0																			// Index into allCharacteristics
+	private var allServices: [CBService]!
+	private var serviceIdx = 0																					// Index into allServices
+	private var allCharacteristicsForService: [CBCharacteristic]!
+	private var characteristicIdx = 0																			// Index into allCharacteristics
 	var completeDISdata = false																					// Logs status of if we have obtained all the characteristics for this device yet or not
 	
 	
@@ -192,7 +192,7 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 	}
 	
 	
-	fileprivate func startAutodisableTimer(seconds: TimeInterval) {										// Create a timer that needs to be tickled every 'second' seconds otherwise it will fire
+	private func startAutodisableTimer(seconds: TimeInterval) {										// Create a timer that needs to be tickled every 'second' seconds otherwise it will fire
 		
 		rememberedSeconds = seconds
 		restartAutodisableTimer()
@@ -201,7 +201,7 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 	}
 	
 	
-	fileprivate func restartAutodisableTimer() {																	// 'Tickle' the timer (can be called from non-main threads)
+	private func restartAutodisableTimer() {																	// 'Tickle' the timer (can be called from non-main threads)
 		
 		deviceDisabled = false
 		

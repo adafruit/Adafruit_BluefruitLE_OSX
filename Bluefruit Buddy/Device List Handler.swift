@@ -26,7 +26,7 @@ class DeviceListHandler: NSObject, NSTableViewDataSource, NSTableViewDelegate, B
 			self.window = self.tableView.window
 		}
 	}
-	fileprivate var reloadInProgress = false
+	private var reloadInProgress = false
 	
 	
 	// NSTableViewDataSource

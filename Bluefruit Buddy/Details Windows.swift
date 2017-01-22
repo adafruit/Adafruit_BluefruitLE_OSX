@@ -59,9 +59,9 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	@IBOutlet var firmwareUpdateButton: NSButton!
 	
-	fileprivate var manager: CBCentralManager!																						// Two-phase initialize manager (since it requires self - define as var)
-	fileprivate var UARTPeripheral: CBPeripheral?
-	fileprivate var UARTRxCharacteristic: CBCharacteristic? {
+	private var manager: CBCentralManager!																						// Two-phase initialize manager (since it requires self - define as var)
+	private var UARTPeripheral: CBPeripheral?
+	private var UARTRxCharacteristic: CBCharacteristic? {
 		didSet {
 			if UARTRxCharacteristic != nil {
 				UARTPeripheral?.setNotifyValue(receiveTextBtn.state == NSOnState, for: UARTRxCharacteristic!)		// Tell peripheral to notify us (or not). Chains to didUpdateValueForCharacteristic if Rx is on
@@ -69,7 +69,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 			receiveTextBtn.isEnabled = UARTRxCharacteristic != nil																// Don't enable Receive Text button until we can communicate with the Rx Characteristic
 		}
 	}
-	fileprivate var UARTTxCharacteristic: CBCharacteristic? {
+	private var UARTTxCharacteristic: CBCharacteristic? {
 		didSet {																												// Enable send options only after we can communicate with the Tx Characteristic
 			UARTTextView.isEditable = UARTTxCharacteristic != nil
 			returnSendsTextBtn.isEnabled = UARTTxCharacteristic != nil
@@ -80,7 +80,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 		}
 	}
 	
-	fileprivate var sendInsertionPosition = 0
+	private var sendInsertionPosition = 0
 	
 	
 	// MARK: -
@@ -393,7 +393,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	// MARK:-
 	
-	fileprivate func sendString(_ strToSend: String) {
+	private func sendString(_ strToSend: String) {
 		
 		if strToSend.characters.count == 0 { return }
 		
