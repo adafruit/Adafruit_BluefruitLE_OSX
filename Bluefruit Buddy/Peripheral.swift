@@ -262,20 +262,40 @@ extension Peripheral.GATT {
                                 return "    \(aChar.uuid.characteristicName)"
                         }
                         
-                        let valueString: String
-                        if aChar.uuid == CBUUID.DFUVersion {
-                                // Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
-                                valueString = aChar.value!.description
-                        } else {
-                                // Otherwise print the UTF-8 string
-                                if let value = aChar.value {
-                                        valueString = value.toASCIIString
-                                } else {
-                                        valueString = "n/a"
+                        let characteristicString = aChar.displayString
+                        return "    \(aChar.uuid.characteristicName) \"\(characteristicString)\""
+                }
+        }
+        
+}
+
+extension CBCharacteristic {
+        var displayString: String {
+                guard properties.contains(.read) else {
+                        return "??"
+                }
+                
+                guard let value = value else {
+                        return "n/a"
+                }
+                
+                switch uuid {
+                case CBUUID.BatteryLevel:
+                        // <https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.battery_level.xml>
+                        // One byte, 0.100 are the allowed values
+                        if value.count == 1 {
+                                let level = value[0]
+                                if level <= 100 {
+                                        return "\(level)%"
                                 }
                         }
-                        
-                        return "    \(aChar.uuid.characteristicName) \"\(valueString)\""
+                        return "??"
+
+                case CBUUID.DFUVersion:
+                        // Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
+                        return value.description
+                default:
+                        return value.toASCIIString
                 }
         }
 }
