@@ -100,7 +100,7 @@ class DeviceListHandler: NSObject, NSTableViewDataSource, NSTableViewDelegate, B
 			
 			if let serviceUUIDs = device.advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID] {					// Display any and all service UUID's if present
 				cellsView.serviceUUIDs.stringValue = "Services available: "
-				for aUUID in serviceUUIDs {	cellsView.serviceUUIDs.stringValue += aUUID.characteristicNameForUUID() + "\n" }
+				for aUUID in serviceUUIDs {	cellsView.serviceUUIDs.stringValue += aUUID.characteristicName + "\n" }
 			} else {
 				cellsView.serviceUUIDs.isHidden = true
 			}
@@ -116,7 +116,7 @@ class DeviceListHandler: NSObject, NSTableViewDataSource, NSTableViewDelegate, B
 					switch aDisplayItem {
 						
 					case let .service(aServ):
-						str += "\(aServ.uuid.characteristicNameForUUID())"
+						str += "\(aServ.uuid.characteristicName)"
 						
 					case let .characteristic(aChar):
 						
@@ -132,10 +132,10 @@ class DeviceListHandler: NSObject, NSTableViewDataSource, NSTableViewDelegate, B
 								valueString = byteString.hexToPrintableString()
 							}
 							
-							str += "    \(aChar.uuid.characteristicNameForUUID()) \"\(valueString)\""
+							str += "    \(aChar.uuid.characteristicName) \"\(valueString)\""
 						} else {																								// Doesn't allow reading so print characteristic name only
 							
-							str += "    \(aChar.uuid.characteristicNameForUUID())"
+							str += "    \(aChar.uuid.characteristicName)"
 						}
 
 					} // switch

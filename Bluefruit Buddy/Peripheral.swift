@@ -128,7 +128,7 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 	// Called for each Characteristic for each Service
 	func handleValueAquisitionForCharacteristic(_ peripheral: CBPeripheral, characteristic: CBCharacteristic) {
 		
-		if verboseConsoleLog { NSLog("Discovered Characteristic: \(characteristic) \(characteristic.properties) \(characteristic.uuid.characteristicNameForUUID())") }
+		if verboseConsoleLog { NSLog("Discovered Characteristic: \(characteristic) \(characteristic.properties) \(characteristic.uuid.characteristicName)") }
 		
 		if characteristic.properties.rawValue & CBCharacteristicProperties.read.rawValue != 0 {					// This Characteristic allows reading
 			peripheral.readValue(for: characteristic)												// Reads the value by chaining to didUpdateValueForCharacteristic
@@ -151,7 +151,7 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 			var byteString = "n/a"																				// Default in case of error
 			if let value = characteristic.value { byteString = value.description }
 			NSLog("didUpdateValueForCharacteristic: peripheral=\(peripheral)")
-			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.uuid.characteristicNameForUUID()), bytes=\(byteString) \"\(byteString.hexToPrintableString())\"")
+			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.uuid.characteristicName), bytes=\(byteString) \"\(byteString.hexToPrintableString())\"")
 			if error != nil { NSLog("ERROR=\(error!)") }
 		}
 		

@@ -315,7 +315,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 			var byteString = "n/a"																									// Default in case of error
 			if let value = characteristic.value { byteString = value.description }
 			NSLog("didUpdateValueForCharacteristic: peripheral=\(peripheral)")
-			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.uuid.characteristicNameForUUID()), bytes=\(byteString) \"\(byteString.hexToPrintableString())\"")
+			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.uuid.characteristicName), bytes=\(byteString) \"\(byteString.hexToPrintableString())\"")
 			if error != nil { NSLog("ERROR=\(error!)") }
 		}
 		

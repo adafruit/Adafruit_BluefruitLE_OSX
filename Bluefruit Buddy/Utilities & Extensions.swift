@@ -67,11 +67,10 @@ extension NSWindow {
 
 
 // Load up a list of known GATT Characteristics (once). 16-bit UUIDs are defined by the Bluetooth SIG, 128-bit UUIDs are custom. There will be 32-bit UUIDs in the future
-var gattCharacteristicNames: Dictionary<String, String>! = {
+private var gattCharacteristicNames: Dictionary<String, String> = {
 
 	let path = Bundle.main.path(forResource: "GATT-characteristic-names", ofType: "plist")
-	let names = NSDictionary(contentsOfFile: path!) as? Dictionary<String, String>
-	return names
+        return NSDictionary(contentsOfFile: path!) as! Dictionary<String, String>
 
 }()
 
@@ -81,7 +80,7 @@ var gattCharacteristicNames: Dictionary<String, String>! = {
 extension CBUUID {
 	
 	// Given a characteristic UUID, return it's name if known
-	func characteristicNameForUUID() -> String {  
+        var characteristicName: String {
 		
 		if let name = gattCharacteristicNames[self.uuidString] {
 			return name
