@@ -398,14 +398,24 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
                         return
                 }
 		
-		if verboseConsoleLog { let crText = string.replacingOccurrences(of: "\n", with: "•"); NSLog("sending \"\(crText)\"") }
+		if verboseConsoleLog {
+                        let crText = string.replacingOccurrences(of: "\n", with: "•");
+                        NSLog("sending \"\(crText)\"")
+                }
 		
-		var writeType = CBCharacteristicWriteType.withoutResponse																	// Default to 'peripheral doesnt support response'
-		if (UARTTxCharacteristic!.properties.rawValue & CBCharacteristicProperties.write.rawValue) != 0 {							// If it responds, we'd rather have that
-			writeType = CBCharacteristicWriteType.withResponse
-		}																															// And if it handles neither (not likely), we'll display an error message upon sending
-		
-		var start = 0																												// Send the data in max blocks of 20 chars as per the GATT Characteristic size limit
+                // Default to "peripheral doesn't support response"
+                var writeType = CBCharacteristicWriteType.withoutResponse
+                
+                // If it responds, we'd rather have that
+                // TJW: Was this code intending to check for .withResponse?
+		if UARTTxCharacteristic!.properties.contains(.write) {
+			writeType = .withResponse
+                }
+                
+                // And if it handles neither (not likely), we'll display an error message upon sending
+		var start = 0
+                
+                // Send the data in max blocks of 20 chars as per the GATT Characteristic size limit
 		repeat {
                     abort()
                     /*
