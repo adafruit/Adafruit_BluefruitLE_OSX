@@ -11,10 +11,10 @@ import CoreBluetooth
 
 
 
-func delayRunOnMainQ(delay: Double, closure: Void->Void) {
+func delayRunOnMainQ(_ delay: Double, closure: @escaping (Void)->Void) {
 	
-	let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay * Double(NSEC_PER_SEC)))
-	dispatch_after(delayTime, dispatch_get_main_queue()) {
+	let delayTime = DispatchTime.now() + Double(Int64(delay * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+	DispatchQueue.main.asyncAfter(deadline: delayTime) {
 		closure()
 	}
 	
@@ -25,15 +25,15 @@ func delayRunOnMainQ(delay: Double, closure: Void->Void) {
 
 extension NSWindow {
 	
-	func alert(message: String, infoText: String, completion: (()->Void)? = nil) {
+	func alert(_ message: String, infoText: String, completion: (()->Void)? = nil) {
 		
 		delayRunOnMainQ(0) {
 			let alert = NSAlert()																									// Must be run on main thread. Sometimes called from another thread
 			alert.messageText = message
-			alert.addButtonWithTitle("OK")
+			alert.addButton(withTitle: "OK")
 			alert.informativeText = infoText
 			
-			alert.beginSheetModalForWindow(self, completionHandler: { (NSModalResponse)->Void in
+			alert.beginSheetModal(for: self, completionHandler: { (NSModalResponse)->Void in
 				completion?()																										// Call any optional completion after the user clicks
 			})
 		}
@@ -42,17 +42,17 @@ extension NSWindow {
 	
 	
 	// Checks that BLE is OK, otherwise report a problem and call the optional completion handler after the user clicks OK
-	func reportBLEStatus(manager: CBCentralManager, completion: (()->Void)? = nil) {
+	func reportBLEStatus(_ manager: CBCentralManager, completion: (()->Void)? = nil) {
 		
 		let info: String
 		
 		switch manager.state {
-		case .PoweredOn: return																										// All is well. Just exit & don't call completion
-		case .PoweredOff: info = "Bluetooth is currently powered off. Enable Bluetooth in the System Settings.";
-		case .Resetting: info = "The connection was momentarily lost; an update is imminent. Try again shortly."
-		case .Unauthorized: info = "This application is not authorized to use Bluetooth Low Energy.";
-		case .Unsupported: info = "This Mac does not support Bluetooth Low Energy."
-		case .Unknown: info = "The current state of the Central Manager is unknown; an update is imminent. Try again shortly."
+		case .poweredOn: return																										// All is well. Just exit & don't call completion
+		case .poweredOff: info = "Bluetooth is currently powered off. Enable Bluetooth in the System Settings.";
+		case .resetting: info = "The connection was momentarily lost; an update is imminent. Try again shortly."
+		case .unauthorized: info = "This application is not authorized to use Bluetooth Low Energy.";
+		case .unsupported: info = "This Mac does not support Bluetooth Low Energy."
+		case .unknown: info = "The current state of the Central Manager is unknown; an update is imminent. Try again shortly."
 		}
 		
 		manager.stopScan()																											// Errors stop scanning until they are resolved
@@ -69,7 +69,7 @@ extension NSWindow {
 // Load up a list of known GATT Characteristics (once). 16-bit UUIDs are defined by the Bluetooth SIG, 128-bit UUIDs are custom. There will be 32-bit UUIDs in the future
 var gattCharacteristicNames: Dictionary<String, String>! = {
 
-	let path = NSBundle.mainBundle().pathForResource("GATT-characteristic-names", ofType: "plist")
+	let path = Bundle.main.path(forResource: "GATT-characteristic-names", ofType: "plist")
 	let names = NSDictionary(contentsOfFile: path!) as? Dictionary<String, String>
 	return names
 
@@ -83,10 +83,10 @@ extension CBUUID {
 	// Given a characteristic UUID, return it's name if known
 	func characteristicNameForUUID() -> String {  
 		
-		if let name = gattCharacteristicNames[self.UUIDString] {
+		if let name = gattCharacteristicNames[self.uuidString] {
 			return name
 		}
-		return self.UUIDString
+		return self.uuidString
 		
 	}
 	
@@ -109,7 +109,7 @@ extension String {
 	
 	// Allow String subscripting such as "AString"[3...4] which would return "ri"
 	subscript (i: Int) -> Character {
-		return self[self.startIndex.advancedBy(i)]
+		return self[self.characters.index(self.startIndex, offsetBy: i)]
 	}
 	
 	subscript (i: Int) -> String {
@@ -117,16 +117,16 @@ extension String {
 	}
 	
 	subscript (r: Range<Int>) -> String {
-		let startI = startIndex.advancedBy(r.startIndex)
-		let endI = startIndex.advancedBy(r.endIndex)
-		return substringWithRange(startI..<endI)
+		let startI = characters.index(startIndex, offsetBy: r.lowerBound)
+		let endI = characters.index(startIndex, offsetBy: r.upperBound)
+		return substring(with: startI..<endI)
 	}
 	
 	
 	// Convert "4164616672756974".hexToPrintableString() to "Adafruit"
 	func hexToPrintableString() -> String {
 		
-		let validHex = self.lowercaseString.characters.filter() {													// Strip out any non-hex characters
+		let validHex = self.lowercased().characters.filter() {													// Strip out any non-hex characters
 			let alpha = ($0 >= "a" && $0 <= "f")																	// XC 7.3 / Swift 2.2 complains when these 3 lines are combined
 			let numeric = ($0 >= "0" && $0 <= "9")
 			return alpha || numeric
@@ -136,9 +136,9 @@ extension String {
 		if validHexStr.characters.count % 2 == 1 { return "" }														// Must be an even number of hex characters
 		
 		var printableString = ""
-		for i in 0.stride(to: validHexStr.characters.count, by: 2) {												// Convert 2 consecutive characters
-			let v = Int(validHexStr[i...i+1], radix: 16)!
-			printableString += UnicodeScalar(v).escape(asASCII: true)
+		for i in stride(from: 0, to: validHexStr.characters.count, by: 2) {												// Convert 2 consecutive characters
+			let v = Int(validHexStr[i..<(i+2)], radix: 16)!
+			printableString += (UnicodeScalar(v)?.escaped(asASCII: true))!
 		}
 		
 		return printableString

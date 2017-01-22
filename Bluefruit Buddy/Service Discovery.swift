@@ -14,7 +14,7 @@ import CoreBluetooth
 
 
 
-let cbManagerQ = dispatch_queue_create("com.adafruit.blebud.queue", DISPATCH_QUEUE_CONCURRENT)					// Define our own queue to put Central events onto
+let cbManagerQ = DispatchQueue(label: "com.adafruit.blebud.queue", attributes: DispatchQueue.Attributes.concurrent)					// Define our own queue to put Central events onto
 
 var foundPeripherals: [Peripheral] = []																			// Array of found devices. Items are never removed, just marked as disconnected
 
@@ -23,8 +23,8 @@ var foundPeripherals: [Peripheral] = []																			// Array of found devi
 // This kicks off the communications with a BLE peripheral device by searching for whomever is advertising
 class ServiceDiscovery: NSObject, CBCentralManagerDelegate {
 	
-	private var manager: CBCentralManager!																		// Two-phase initialize manager (since it requires self - define as var)
-	private let delegate: BLEPeripheralListHandlerDelegate
+	fileprivate var manager: CBCentralManager!																		// Two-phase initialize manager (since it requires self - define as var)
+	fileprivate let delegate: BLEPeripheralListHandlerDelegate
 	
 	
 	init(delegate: BLEPeripheralListHandlerDelegate) {
@@ -39,13 +39,13 @@ class ServiceDiscovery: NSObject, CBCentralManagerDelegate {
 	
 	
 	// CBCentralManagerDelegate
-	func centralManagerDidUpdateState(manager: CBCentralManager) {
+	func centralManagerDidUpdateState(_ manager: CBCentralManager) {
 		
-		if manager.state == .PoweredOn {
+		if manager.state == .poweredOn {
 			// Scan for all BLE peripherals no matter their Service ID. Can call scanForPeripheralsWithServices multiple times even if a scan is currently in progress
 			// Pass in true so we keep receiving advertising messages to let us indicate when a peripheral goes offline and to constantly get its RSSI
 			// The CBCentralManagerScanOptionAllowDuplicatesKey parameter doesn't seem to have any effect (on 10.10.5) but set here as needed anyway
-			manager.scanForPeripheralsWithServices(nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])	// Chains to didDiscoverPeripheral
+			manager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: true])	// Chains to didDiscoverPeripheral
 		} else {
 			delegate.window.reportBLEStatus(manager)															// Report an error
 		}
@@ -54,7 +54,7 @@ class ServiceDiscovery: NSObject, CBCentralManagerDelegate {
 	
 	
 	// CBCentralManagerDelegate
-	func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
+	func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
 		
 		if verboseConsoleLog { NSLog("didDiscoverPeripheral: peripheral=\(peripheral), RSSI=\(RSSI) dBm, advertisementData=\(advertisementData)") }
 		
@@ -62,13 +62,13 @@ class ServiceDiscovery: NSObject, CBCentralManagerDelegate {
 		
 		if existingPeripheral.count == 0 {																		// New, never before seen peripheral
 			
-			let newDevice = Peripheral(manager: manager, peripheral: peripheral, advertisementData: advertisementData, RSSI: RSSI, refreshDelegate: delegate)	// Chains to didConnectPeripheral by way of a connectPeripheral call
+			let newDevice = Peripheral(manager: manager, peripheral: peripheral, advertisementData: advertisementData as [String : AnyObject], RSSI: RSSI, refreshDelegate: delegate)	// Chains to didConnectPeripheral by way of a connectPeripheral call
 			foundPeripherals.append(newDevice)																	// Record a new device
 			
 				// Start a Services lookup
 			delayRunOnMainQ(0.1) {																				// Delay the lookup so we can return to report back the advertisement info already discovered while the services lookup commences
 				peripheral.delegate = newDevice
-				self.manager.connectPeripheral(peripheral, options: [CBConnectPeripheralOptionNotifyOnDisconnectionKey : true])	// Connect to the newly found Peripheral. Chains to didConnectPeripheral or didFailToConnectPeripheral
+				self.manager.connect(peripheral, options: [CBConnectPeripheralOptionNotifyOnDisconnectionKey : true])	// Connect to the newly found Peripheral. Chains to didConnectPeripheral or didFailToConnectPeripheral
 			}
 		
 		} else {																								// Previously known device
@@ -81,7 +81,7 @@ class ServiceDiscovery: NSObject, CBCentralManagerDelegate {
 	
 	
 	// CBCentralManagerDelegate
-	func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+	func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
 		
 		if verboseConsoleLog { NSLog("didConnectPeripheral: peripheral=\(peripheral)") }
 		
@@ -91,7 +91,7 @@ class ServiceDiscovery: NSObject, CBCentralManagerDelegate {
 	
 	
 	// CBCentralManagerDelegate
-	func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+	func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
 		
 		if verboseConsoleLog { NSLog("didFailToConnectPeripheral: peripheral=\(peripheral), ERROR=\(error!)") }
 		
@@ -101,7 +101,7 @@ class ServiceDiscovery: NSObject, CBCentralManagerDelegate {
 	
 	
 	// CBCentralManagerDelegate
-	func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+	func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
 		
 		if verboseConsoleLog { NSLog("didDisconnectPeripheral: peripheral=\(peripheral), ERROR=\(error)") }
 		

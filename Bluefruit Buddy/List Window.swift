@@ -13,10 +13,10 @@ import Cocoa
 
 class ListViewController: NSViewController {
 	
-	@IBOutlet private var deviceListTableView: NSTableView!
-	@IBOutlet private var progressIndicator: NSProgressIndicator!
-	@IBOutlet private var scanningMsg: NSTextField!
-	@IBOutlet private var deviceListHandler: DeviceListHandler!				// A connection (as set up in IB) to our DeviceListHandler object
+	@IBOutlet fileprivate var deviceListTableView: NSTableView!
+	@IBOutlet fileprivate var progressIndicator: NSProgressIndicator!
+	@IBOutlet fileprivate var scanningMsg: NSTextField!
+	@IBOutlet fileprivate var deviceListHandler: DeviceListHandler!				// A connection (as set up in IB) to our DeviceListHandler object
 	
 	var bleComms: ServiceDiscovery!
 	
@@ -34,14 +34,14 @@ class ListViewController: NSViewController {
 	}
 	
 	
-	@IBAction func clearButton(sender: AnyObject) {
+	@IBAction func clearButton(_ sender: AnyObject) {
 		
 		bleComms.discoveryReset()
 		
 	}
 	
 	
-	func scanningStatus(scanning: Bool) {
+	func scanningStatus(_ scanning: Bool) {
 		
 		if scanning {
 			progressIndicator.startAnimation(self)
@@ -49,7 +49,7 @@ class ListViewController: NSViewController {
 			progressIndicator.stopAnimation(self)
 		}
 		
-		scanningMsg.hidden = !scanning
+		scanningMsg.isHidden = !scanning
 		
 	}
 	
