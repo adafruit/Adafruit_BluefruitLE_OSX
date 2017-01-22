@@ -100,43 +100,42 @@ extension CBUUID {
 
 
 extension String {
-	
-	// Allow String subscripting such as "AString"[3...4] which would return "ri"
-	subscript (i: Int) -> Character {
-		return self[self.characters.index(self.startIndex, offsetBy: i)]
-	}
-	
-	subscript (i: Int) -> String {
-		return String(self[i] as Character)
-	}
-	
-	subscript (r: Range<Int>) -> String {
-		let startI = characters.index(startIndex, offsetBy: r.lowerBound)
-		let endI = characters.index(startIndex, offsetBy: r.upperBound)
-		return substring(with: startI..<endI)
-	}
-	
-	
-	// Convert "4164616672756974".hexToPrintableString() to "Adafruit"
-	func hexToPrintableString() -> String {
-		
-		let validHex = self.lowercased().characters.filter() {													// Strip out any non-hex characters
-			let alpha = ($0 >= "a" && $0 <= "f")																	// XC 7.3 / Swift 2.2 complains when these 3 lines are combined
-			let numeric = ($0 >= "0" && $0 <= "9")
-			return alpha || numeric
-		}
-		let validHexStr = String(validHex)
-		
-		if validHexStr.characters.count % 2 == 1 { return "" }														// Must be an even number of hex characters
-		
-		var printableString = ""
-		for i in stride(from: 0, to: validHexStr.characters.count, by: 2) {												// Convert 2 consecutive characters
-			let v = Int(validHexStr[i..<(i+2)], radix: 16)!
-			printableString += (UnicodeScalar(v)?.escaped(asASCII: true))!
-		}
-		
-		return printableString
-	}
-	
+        
+        // Allow String subscripting such as "AString"[3...4] which would return "ri"
+        subscript (r: Range<Int>) -> String {
+                let startI = characters.index(startIndex, offsetBy: r.lowerBound)
+                let endI = characters.index(startIndex, offsetBy: r.upperBound)
+                return substring(with: startI..<endI)
+        }
+        
+        
+        // Convert "4164616672756974".hexToPrintableString() to "Adafruit"
+        func hexToPrintableString() -> String {
+                
+                // Strip out any non-hex characters
+                let validHex = self.lowercased().characters.filter() {
+                        // Xcode 8.2.1 / Swift 3 (still) complains when these 3 lines are combined
+                        let alpha = ($0 >= "a" && $0 <= "f")
+                        let numeric = ($0 >= "0" && $0 <= "9")
+                        return alpha || numeric
+                }
+                
+                // Must be an even number of hex characters
+                guard validHex.count % 2 == 0 else {
+                        return ""
+                }
+                
+                var printableString = ""
+                for i in stride(from: 0, to: validHex.count, by: 2) {
+                        // Convert 2 consecutive characters
+                        let high = Int(String(validHex[i+0]), radix: 16)!
+                        let low = Int(String(validHex[i+1]), radix: 16)!
+                        let v = (high << 4) | low
+                        printableString += (UnicodeScalar(v)?.escaped(asASCII: true))!
+                }
+                
+                return printableString
+        }
+        
 }
 
