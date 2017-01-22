@@ -120,7 +120,7 @@ class DeviceListHandler: NSObject, NSTableViewDataSource, NSTableViewDelegate, B
 						
 					case let .characteristic(aChar):
 						
-						let allowsReading = aChar.properties.rawValue & CBCharacteristicProperties.read.rawValue != 0
+						let allowsReading = aChar.properties.contains(.read)
 						
 						if allowsReading {																						// Show the data if this Characteristic allowed reading
 							

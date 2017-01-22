@@ -130,7 +130,7 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 		
 		if verboseConsoleLog { NSLog("Discovered Characteristic: \(characteristic) \(characteristic.properties) \(characteristic.uuid.characteristicName)") }
 		
-		if characteristic.properties.rawValue & CBCharacteristicProperties.read.rawValue != 0 {					// This Characteristic allows reading
+		if characteristic.properties.contains(.read) {					// This Characteristic allows reading
 			peripheral.readValue(for: characteristic)												// Reads the value by chaining to didUpdateValueForCharacteristic
 			peripheral.setNotifyValue(true, for: characteristic)									// Set up for any changes to the Characteristic. Also chains to didUpdateValueForCharacteristic
 		} else {
