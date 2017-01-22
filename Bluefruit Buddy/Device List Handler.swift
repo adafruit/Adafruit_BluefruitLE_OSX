@@ -106,43 +106,11 @@ class DeviceListHandler: NSObject, NSTableViewDataSource, NSTableViewDelegate, B
 			}
 			
 				// Build the DIS information when we have it all
-			if device.completeDISdata {																							// All Device Information Status information has been downloaded
-				var str = ""
-				
-				var firstTime = true
-				for aDisplayItem in device.displayGATT {
-					if !firstTime { str += "\n" } else { firstTime = false }
-					
-					switch aDisplayItem {
-						
-					case let .service(aServ):
-						str += "\(aServ.uuid.characteristicName)"
-						
-					case let .characteristic(aChar):
-						
-						let allowsReading = aChar.properties.contains(.read)
-						
-						if allowsReading {																						// Show the data if this Characteristic allowed reading
-							
-							let valueString: String
-							if aChar.uuid == CBUUID.DFUVersion {										// Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
-								valueString = aChar.value!.description
-							} else {																							// Otherwise print the UTF-8 string
-								var byteString = "n/a"; if let value = aChar.value { byteString = value.description }
-								valueString = byteString.hexToPrintableString()
-							}
-							
-							str += "    \(aChar.uuid.characteristicName) \"\(valueString)\""
-						} else {																								// Doesn't allow reading so print characteristic name only
-							
-							str += "    \(aChar.uuid.characteristicName)"
-						}
-
-					} // switch
-				} // for
-				
-				if str != cellsView.deviceInfoStatus.string {																	// Update only if changed
-					cellsView.deviceInfoStatus.string = str
+			if device.completeDISdata {
+                                // All Device Information Status information has been downloaded
+                                let str = device.displayGATT.map({ $0.displayString }).joined(separator: "\n")
+				if str != cellsView.deviceInfoStatus.string {
+                                        cellsView.deviceInfoStatus.string = str
 				}
 			} else {																											// Device Information Status has not completed download
 				cellsView.deviceInfoStatus.string = "\n\n\t\t   Acquiring Device Information Status"
