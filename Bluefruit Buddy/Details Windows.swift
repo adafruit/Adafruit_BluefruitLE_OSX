@@ -254,18 +254,16 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	// CBCentralManagerDelegate
 	func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
 		
-		if verboseConsoleLog { NSLog("didDisconnectPeripheral: peripheral=\(peripheral), ERROR=\(error)") }
-		
-		if error != nil {
-                    print("error \(error)")
-                    abort()
-                    /*
-			if error!.code == 6 {
-				self.view.window!.alert(peripheral.name! + " disconnected", infoText: "")
-			} else {
-				self.view.window!.alert("Peripheral disconnected", infoText: error!.localizedDescription)
+		if verboseConsoleLog {
+                        NSLog("didDisconnectPeripheral: peripheral=\(peripheral), ERROR=\(error)")
+                }
+
+                if let error = error {
+                        if let cbError = error as? CBError, cbError.code == .connectionTimeout {
+                                self.view.window!.alert(peripheral.name! + " disconnected", infoText: "")
+                        } else {
+                                self.view.window!.alert("Peripheral disconnected", infoText: error.localizedDescription)
 			}
- */
 		}
 		
 		Peripheral.findPeripheral(peripheral.identifier).deviceDisabled = true													// Record a disconnected peripheral
@@ -411,7 +409,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
                 // TJW: Was this code intending to check for .withResponse?
 		if UARTTxCharacteristic!.properties.contains(.write) {
 			writeType = .withResponse
-                }                
+                }
                 
                 // Send the data in max blocks of 20 chars as per the GATT Characteristic size limit
                 // TJW: My change here sends 20 *bytes* at a time instead of 20 characters. It is unclear, since there is no reference to documentation on the limit, if we really could send 20 characters (possibly many, many more bytes for non-ASCII characters). Of course, this means the receiver needs to recombine and validate UTF-8 sequences if they really want non-ASCII (probably should be doing that anyway).
