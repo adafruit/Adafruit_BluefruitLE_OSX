@@ -137,7 +137,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 		
 		let fromPosition = sendInsertionPosition
 		sendInsertionPosition = UARTTextView.string!.characters.count
-		sendString(UARTTextView.string![fromPosition..<sendInsertionPosition])
+                send(string: UARTTextView.string![fromPosition..<sendInsertionPosition])
 		
 	}
 	
@@ -363,7 +363,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {	// Outgoing text to device
 		
 		if echoOutgoingTextBtn.state == NSOffState {																				// When echo is on, send the characters 1 at a time & don't display
-			sendString(replacementString!)
+			send(string: replacementString!)
 			return false
 		}
 		
@@ -376,7 +376,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 			sendInsertionPosition = textView.string!.characters.count+1
 			var sendText = textView.string![fromPosition..<sendInsertionPosition-1]
 			if alsoSendReturnBtn.state == NSOnState { sendText += "\n" }
-			sendString(sendText)
+			send(string: sendText)
 		}
 		
 		if replacementString!.characters.count != 0 {																				// Handle inserting local text so we can ensure it's blue
@@ -393,11 +393,12 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	// MARK:-
 	
-	private func sendString(_ strToSend: String) {
+	private func send(string: String) {
+                guard !string.isEmpty else {
+                        return
+                }
 		
-		if strToSend.characters.count == 0 { return }
-		
-		if verboseConsoleLog { let crText = strToSend.replacingOccurrences(of: "\n", with: "•"); NSLog("sending \"\(crText)\"") }
+		if verboseConsoleLog { let crText = string.replacingOccurrences(of: "\n", with: "•"); NSLog("sending \"\(crText)\"") }
 		
 		var writeType = CBCharacteristicWriteType.withoutResponse																	// Default to 'peripheral doesnt support response'
 		if (UARTTxCharacteristic!.properties.rawValue & CBCharacteristicProperties.write.rawValue) != 0 {							// If it responds, we'd rather have that
@@ -409,13 +410,13 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
                     abort()
                     /*
 			var end = start + 19
-			if end >= strToSend.characters.count { end = strToSend.characters.count-1 }
-			let str = strToSend[start..<(end+1)] as NSString
+			if end >= string.characters.count { end = string.characters.count-1 }
+			let str = string[start..<(end+1)] as NSString
 			let data = Data(bytes: UnsafePointer<UInt8>(str.utf8String!), count: str.length)
 			UARTPeripheral?.writeValue(data, for: UARTTxCharacteristic!, type: writeType)
 			start += 20
  */
-		} while start < strToSend.characters.count
+		} while start < string.characters.count
 		
 	}
 	
