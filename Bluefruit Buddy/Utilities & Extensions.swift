@@ -81,12 +81,7 @@ extension CBUUID {
 	
 	// Given a characteristic UUID, return it's name if known
         var characteristicName: String {
-		
-		if let name = gattCharacteristicNames[self.uuidString] {
-			return name
-		}
-		return self.uuidString
-		
+		return gattCharacteristicNames[uuidString] ?? uuidString
 	}
 	
 	
