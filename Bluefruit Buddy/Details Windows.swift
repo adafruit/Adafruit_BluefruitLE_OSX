@@ -312,10 +312,19 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {	// Incoming text from device
 		
 		if verboseConsoleLog {
-			var byteString = "n/a"																									// Default in case of error
-			if let value = characteristic.value { byteString = value.description }
-			NSLog("didUpdateValueForCharacteristic: peripheral=\(peripheral)")
-			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.uuid.characteristicName), bytes=\(byteString) \"\(byteString.hexToPrintableString())\"")
+                        let byteString: String
+                        let characteristicValue: String
+
+                        if let value = characteristic.value {
+                                byteString = value.lowercaseHexString
+                                characteristicValue = String.fromBTLE(utf8: value)
+                        } else {
+                                byteString = ""
+                                characteristicValue = "n/a"
+                        }
+
+                        NSLog("didUpdateValueForCharacteristic: peripheral=\(peripheral)")
+			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.uuid.characteristicName), bytes=\(byteString) \"\(characteristicValue)\"")
 			if error != nil { NSLog("ERROR=\(error!)") }
 		}
 		

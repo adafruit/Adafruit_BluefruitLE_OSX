@@ -148,10 +148,18 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 	func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
 		
 		if verboseConsoleLog {
-			var byteString = "n/a"																				// Default in case of error
-			if let value = characteristic.value { byteString = value.description }
+                        let byteString: String
+                        let characteristicValue: String
+                        
+                        if let value = characteristic.value {
+                                byteString = value.lowercaseHexString
+                                characteristicValue = String.fromBTLE(utf8: value)
+                        } else {
+                                byteString = ""
+                                characteristicValue = "n/a"
+                        }
 			NSLog("didUpdateValueForCharacteristic: peripheral=\(peripheral)")
-			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.uuid.characteristicName), bytes=\(byteString) \"\(byteString.hexToPrintableString())\"")
+			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.uuid.characteristicName), bytes=\(byteString) \"\(characteristicValue)\"")
 			if error != nil { NSLog("ERROR=\(error!)") }
 		}
 		

@@ -140,6 +140,21 @@ extension String {
         
 }
 
+extension Data {
+        var lowercaseHexString: String {
+                let nibble = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]
+                var result = ""
+                for i in 0..<count {
+                        let byte = self[i]
+                        let high = Int((byte >> 4) & 0xf)
+                        let low = Int(byte & 0xf)
+                        result.append(nibble[high])
+                        result.append(nibble[low])
+                }
+                return result
+        }
+}
+
 extension String {
 
         // BTLE characteristic values can return Data with embedded NUL bytes. String(data:encoding:) will happily quote those.
