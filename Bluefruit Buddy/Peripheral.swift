@@ -316,8 +316,9 @@ extension CBCharacteristic {
                 case CBUUID.DFUVersion:
                         // Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
                         return value.description
+                        
                 default:
-                        return value.toASCIIString
+                        return String.fromBTLE(utf8: value)
                 }
         }
         

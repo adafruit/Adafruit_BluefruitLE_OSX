@@ -94,7 +94,6 @@ extension CBUUID {
 	
         static let BatteryLevel = CBUUID(string: "2A19")
         static let CurrentTime = CBUUID(string: "2A2B")
-        
         static let LocalTimeInfo = CBUUID(string: "2A0F")
 }
 
@@ -141,14 +140,14 @@ extension String {
         
 }
 
-extension Data {
-        var toASCIIString: String {
-                var printableString = ""
-                for i in stride(from: 0, to: count, by: 1) {
-                        let v = UInt16(self[i])
-                        printableString += (UnicodeScalar(v)?.escaped(asASCII: true))!
+extension String {
+
+        // BTLE characteristic values can return Data with embedded NUL bytes. String(data:encoding:) will happily quote those.
+        static func fromBTLE(utf8 data: Data) -> String {
+                if let nulIndex = data.index(where: { $0 == 0 }) {
+                        let prefix = data.subdata(in: 0..<nulIndex)
+                        return String(data: prefix, encoding: .utf8) ?? "Not UTF-8"
                 }
-                
-                return printableString
+                return String(data: data, encoding: .utf8) ?? "Not UTF-8"
         }
 }
