@@ -328,28 +328,29 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 			if error != nil { NSLog("ERROR=\(error!)") }
 		}
 		
-		if characteristic.uuid == CBUUID.UARTRxCharacteristic {											// Check to make sure this is our receive Characteristic. Should always pass
-			if let value = characteristic.value {																					// And check to make sure we have valid data. Should also always pass
-				
-				if verboseConsoleLog { let crText = value.description.replacingOccurrences(of: "\n", with: "•"); NSLog("receiving \"\(crText)\"") }
-				
-					// Insert received text & color it to indicate received text
-				if let receivedStr = NSString(data: value, encoding: NSString.defaultCStringEncoding) as? String {
-					
-					let remoteGreenString = NSAttributedString(string: receivedStr, attributes: [NSForegroundColorAttributeName : NSColor(red: 0, green: 0.7, blue: 0, alpha: 1)])
-					self.UARTTextView.textStorage!.append(remoteGreenString)
-					
-					sendInsertionPosition = UARTTextView.string!.characters.count
-					
-					delayRunOnMainQ(0) {
-						self.UARTTextView.scrollRangeToVisible(NSMakeRange(self.sendInsertionPosition, 0))							// Must be run on main Q. We are called from another thread
-					}
+                guard characteristic.uuid == CBUUID.UARTRxCharacteristic else {
+                        assertionFailure("Unexpected received Characteristic")
+                        return
+                }
+                guard let value = characteristic.value else {
+                        assertionFailure("Expected data for UART Rx value")
+                        return
+                }
+                
+                let receivedString = String.fromBTLE(utf8: value)
+                
+                if verboseConsoleLog { let crText = receivedString.replacingOccurrences(of: "\n", with: "•"); NSLog("receiving \"\(crText)\"") }
+                
+                // Insert received text & color it to indicate received text
+                let remoteGreenString = NSAttributedString(string: receivedString, attributes: [NSForegroundColorAttributeName : NSColor(red: 0, green: 0.7, blue: 0, alpha: 1)])
+                
+                delayRunOnMainQ(0) {
+                        self.UARTTextView.textStorage!.append(remoteGreenString)
+                        
+                        self.sendInsertionPosition = self.UARTTextView.string!.characters.count
 
-				}
-			
-			}
-		}
-		
+                        self.UARTTextView.scrollRangeToVisible(NSMakeRange(self.sendInsertionPosition, 0))							// Must be run on main Q. We are called from another thread
+                }
 	}
 	
 	
