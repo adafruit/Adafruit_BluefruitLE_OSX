@@ -266,7 +266,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 			}
 		}
 		
-		Peripheral.findPeripheral(peripheral.identifier).deviceDisabled = true													// Record a disconnected peripheral
+		Peripheral.findPeripheral(peripheral.identifier)?.deviceDisabled = true
 		UARTTxCharacteristic = nil
 		UARTRxCharacteristic = nil
 		

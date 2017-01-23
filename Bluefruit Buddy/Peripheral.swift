@@ -245,14 +245,11 @@ class Peripheral: NSObject, CBPeripheralDelegate {																// Must subcla
 		
 	}
 	
-	
-	class func findPeripheral(_ id: UUID) -> Peripheral {
-		
-		let periph = foundPeripherals.filter() { $0.peripheral.identifier == id }
-		guard periph.count != 0 else { preconditionFailure("searched peripheral not located") }					// If we are searching for it, it must be in foundPeripherals, otherwise big problem...
-		
-		return periph[0]
-		
+	// This can return nil if we've cleared the found device list and then the device is disconnected
+	class func findPeripheral(_ id: UUID) -> Peripheral? {
+                return foundPeripherals.first {
+                        $0.peripheral.identifier == id
+                }
 	}
 	
 } // Peripheral
