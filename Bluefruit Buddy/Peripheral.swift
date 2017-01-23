@@ -297,7 +297,7 @@ extension CBCharacteristic {
                                         return "\(level)%"
                                 }
                         }
-                        return "??"
+                        return value.lowercaseHexString
 
                 case CBUUID.CurrentTime:
                         // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.current_time.xml
@@ -310,7 +310,7 @@ extension CBCharacteristic {
                                         return "\(byte)"
                                 }
                         }
-                        return "??"
+                        return value.lowercaseHexString
                         
                 case CBUUID.LocalTimeInfo:
                         // https://www.bluetooth.com/specifications/gatt/viewer?attributeXmlFile=org.bluetooth.characteristic.local_time_information.xml
@@ -319,11 +319,11 @@ extension CBCharacteristic {
                         if value.count == 2 {
                                 return "\(timeZoneString(byte: value[0])), \(dstString(byte: value[1]))"
                         }
-                        return "??"
+                        return value.lowercaseHexString
                         
                 case CBUUID.DFUVersion:
                         // Special case (oooohhhh nooooo) printing of the DFU Version. It's not a string. Print its raw data
-                        return value.description
+                        return value.lowercaseHexString
                         
                 default:
                         return String.fromBTLE(utf8: value)
