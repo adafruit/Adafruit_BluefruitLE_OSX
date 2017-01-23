@@ -41,13 +41,15 @@ extension NSWindow {
 	}
 	
 	
-	// Checks that BLE is OK, otherwise report a problem and call the optional completion handler after the user clicks OK
-	func reportBLEStatus(_ manager: CBCentralManager, completion: (()->Void)? = nil) {
+	// Checks that BLE is OK, otherwise report a problem.
+	func reportBLEStatus(_ manager: CBCentralManager) {
 		
 		let info: String
 		
 		switch manager.state {
-		case .poweredOn: return																										// All is well. Just exit & don't call completion
+		case .poweredOn:
+                        // All is well. Just exit & don't call completion
+                        return
 		case .poweredOff: info = "Bluetooth is currently powered off. Enable Bluetooth in the System Settings.";
 		case .resetting: info = "The connection was momentarily lost; an update is imminent. Try again shortly."
 		case .unauthorized: info = "This application is not authorized to use Bluetooth Low Energy.";
@@ -96,9 +98,6 @@ extension CBUUID {
         static let CurrentTime = CBUUID(string: "2A2B")
         static let LocalTimeInfo = CBUUID(string: "2A0F")
 }
-
-
-
 
 extension String {
         
