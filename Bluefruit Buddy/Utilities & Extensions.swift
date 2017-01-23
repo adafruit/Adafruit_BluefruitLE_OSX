@@ -109,35 +109,6 @@ extension String {
                 return substring(with: startI..<endI)
         }
         
-        
-        // Convert "4164616672756974".hexToPrintableString() to "Adafruit"
-        func hexToPrintableString() -> String {
-                
-                // Strip out any non-hex characters
-                let validHex = self.lowercased().characters.filter() {
-                        // Xcode 8.2.1 / Swift 3 (still) complains when these 3 lines are combined
-                        let alpha = ($0 >= "a" && $0 <= "f")
-                        let numeric = ($0 >= "0" && $0 <= "9")
-                        return alpha || numeric
-                }
-                
-                // Must be an even number of hex characters
-                guard validHex.count % 2 == 0 else {
-                        return ""
-                }
-                
-                var printableString = ""
-                for i in stride(from: 0, to: validHex.count, by: 2) {
-                        // Convert 2 consecutive characters
-                        let high = Int(String(validHex[i+0]), radix: 16)!
-                        let low = Int(String(validHex[i+1]), radix: 16)!
-                        let v = (high << 4) | low
-                        printableString += (UnicodeScalar(v)?.escaped(asASCII: true))!
-                }
-                
-                return printableString
-        }
-        
 }
 
 extension Data {
