@@ -34,14 +34,14 @@ class ListViewController: NSViewController {
 	}
 	
 	
-	@IBAction func clearButton(sender: AnyObject) {
+	@IBAction func clearButton(_ sender: AnyObject) {
 		
 		bleComms.discoveryReset()
 		
 	}
 	
 	
-	func scanningStatus(scanning: Bool) {
+	func scanningStatus(_ scanning: Bool) {
 		
 		if scanning {
 			progressIndicator.startAnimation(self)
@@ -49,7 +49,7 @@ class ListViewController: NSViewController {
 			progressIndicator.stopAnimation(self)
 		}
 		
-		scanningMsg.hidden = !scanning
+		scanningMsg.isHidden = !scanning
 		
 	}
 	

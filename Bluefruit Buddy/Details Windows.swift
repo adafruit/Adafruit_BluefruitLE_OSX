@@ -24,13 +24,13 @@ class DetailsWindowController: NSWindowController, NSWindowDelegate {
 	
 	override func windowDidLoad() {
 		
-		self.windowFrameAutosaveName = "BluefruitBuddy \(NSApplication.sharedApplication().windows.count)"						// Remember window frames
+		self.windowFrameAutosaveName = "BluefruitBuddy \(NSApplication.shared().windows.count)"						// Remember window frames
 		
 	}
 	
 	
 	// NSWindowDelegate
-	func windowWillClose(notification: NSNotification) {
+	func windowWillClose(_ notification: Notification) {
 		
 		device.detailsController = nil																							// Disconnect us from the peripheral
 		
@@ -64,19 +64,19 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	private var UARTRxCharacteristic: CBCharacteristic? {
 		didSet {
 			if UARTRxCharacteristic != nil {
-				UARTPeripheral?.setNotifyValue(receiveTextBtn.state == NSOnState, forCharacteristic: UARTRxCharacteristic!)		// Tell peripheral to notify us (or not). Chains to didUpdateValueForCharacteristic if Rx is on
+				UARTPeripheral?.setNotifyValue(receiveTextBtn.state == NSOnState, for: UARTRxCharacteristic!)		// Tell peripheral to notify us (or not). Chains to didUpdateValueForCharacteristic if Rx is on
 			}
-			receiveTextBtn.enabled = UARTRxCharacteristic != nil																// Don't enable Receive Text button until we can communicate with the Rx Characteristic
+			receiveTextBtn.isEnabled = UARTRxCharacteristic != nil																// Don't enable Receive Text button until we can communicate with the Rx Characteristic
 		}
 	}
 	private var UARTTxCharacteristic: CBCharacteristic? {
 		didSet {																												// Enable send options only after we can communicate with the Tx Characteristic
-			UARTTextView.editable = UARTTxCharacteristic != nil
-			returnSendsTextBtn.enabled = UARTTxCharacteristic != nil
-			alsoSendReturnBtn.enabled = UARTTxCharacteristic != nil
-			sendBtn.enabled = UARTTxCharacteristic != nil
-			echoOutgoingTextBtn.enabled = UARTTxCharacteristic != nil
-			clearBtn.enabled = UARTTxCharacteristic != nil
+			UARTTextView.isEditable = UARTTxCharacteristic != nil
+			returnSendsTextBtn.isEnabled = UARTTxCharacteristic != nil
+			alsoSendReturnBtn.isEnabled = UARTTxCharacteristic != nil
+			sendBtn.isEnabled = UARTTxCharacteristic != nil
+			echoOutgoingTextBtn.isEnabled = UARTTxCharacteristic != nil
+			clearBtn.isEnabled = UARTTxCharacteristic != nil
 		}
 	}
 	
@@ -89,12 +89,12 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 		
 		super.viewWillAppear()
 		
-		UARTTextArea.hidden = !device.supportsService(CBUUID.UUIDs.UARTService.rawValue)										// Check for a (Nordic) UART Service & show the UART text area if it exists
-		firmwareUpdateButton.hidden = !device.supportsService(CBUUID.UUIDs.DFUService.rawValue)									// Check for Firmware Update Service & show firmware update button
+                UARTTextArea.isHidden = !device.supports(service: CBUUID.UARTService)										// Check for a (Nordic) UART Service & show the UART text area if it exists
+                firmwareUpdateButton.isHidden = !device.supports(service: CBUUID.DFUService)									// Check for Firmware Update Service & show firmware update button
 		
-		noServicesText.hidden = !(UARTTextArea.hidden && firmwareUpdateButton.hidden)											// If we don't recognize any services, show "Supported Services Not Found"
+		noServicesText.isHidden = !(UARTTextArea.isHidden && firmwareUpdateButton.isHidden)											// If we don't recognize any services, show "Supported Services Not Found"
 		
-		if !UARTTextArea.hidden {																								// This peripheral supports UART comms, start-er up
+		if !UARTTextArea.isHidden {																								// This peripheral supports UART comms, start-er up
 			manager = CBCentralManager(delegate: self, queue: cbManagerQ)														// Start up a BLE Manager. Fires off an initial call to centralManagerDidUpdateState. Must rescan to discover the selected peripheral
 		}
 		
@@ -108,41 +108,41 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	}
 	
 	
-	@IBAction func returnSendsText(sender: NSButton) {
+	@IBAction func returnSendsText(_ sender: NSButton) {
 		
-		alsoSendReturnBtn.enabled = returnSendsTextBtn.state == NSOnState
-		
-	}
-	
-	
-	@IBAction func echoTypedText(sender: NSButton) {
-		
-		returnSendsTextBtn.enabled = echoOutgoingTextBtn.state == NSOnState
-		alsoSendReturnBtn.enabled = echoOutgoingTextBtn.state == NSOnState
-		sendBtn.enabled = echoOutgoingTextBtn.state == NSOnState
+		alsoSendReturnBtn.isEnabled = returnSendsTextBtn.state == NSOnState
 		
 	}
 	
 	
-	@IBAction func receiveText(sender: NSButton) {
+	@IBAction func echoTypedText(_ sender: NSButton) {
+		
+		returnSendsTextBtn.isEnabled = echoOutgoingTextBtn.state == NSOnState
+		alsoSendReturnBtn.isEnabled = echoOutgoingTextBtn.state == NSOnState
+		sendBtn.isEnabled = echoOutgoingTextBtn.state == NSOnState
+		
+	}
+	
+	
+	@IBAction func receiveText(_ sender: NSButton) {
 		
 		if UARTRxCharacteristic != nil {
-			UARTPeripheral?.setNotifyValue(receiveTextBtn.state == NSOnState, forCharacteristic: UARTRxCharacteristic!)			// Tell peripheral about changes to check box. Chains to didUpdateValueForCharacteristic if Rx is on
+			UARTPeripheral?.setNotifyValue(receiveTextBtn.state == NSOnState, for: UARTRxCharacteristic!)			// Tell peripheral about changes to check box. Chains to didUpdateValueForCharacteristic if Rx is on
 		}
 		
 	}
 	
 	
-	@IBAction func send(sender: AnyObject) {
+	@IBAction func send(_ sender: AnyObject) {
 		
 		let fromPosition = sendInsertionPosition
 		sendInsertionPosition = UARTTextView.string!.characters.count
-		sendString(UARTTextView.string![fromPosition..<sendInsertionPosition])
+                send(string: UARTTextView.string![fromPosition..<sendInsertionPosition])
 		
 	}
 	
 	
-	@IBAction func clear(sender: AnyObject) {
+	@IBAction func clear(_ sender: AnyObject) {
 		
 		UARTTextView.string! = ""
 		sendInsertionPosition = 0
@@ -150,14 +150,14 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	}
 	
 	
-	@IBAction func firmware(sender: AnyObject) {
+	@IBAction func firmware(_ sender: AnyObject) {
 	}
 	
 	
 	// MARK: -
 	
 	// File > Export UART Text
-	@IBAction func exportUARTText(sender: AnyObject) {
+	@IBAction func exportUARTText(_ sender: AnyObject) {
 
 		let savePanel = NSSavePanel()
 		savePanel.nameFieldLabel = "Export"
@@ -166,16 +166,16 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 		savePanel.allowedFileTypes = ["txt"]
 		savePanel.nameFieldStringValue = device.peripheral.name!
 		
-		savePanel.beginSheetModalForWindow(self.view.window!) { (result: Int) -> Void in										// Export as a plain text .txt file
+		savePanel.beginSheetModal(for: self.view.window!) { (result: Int) -> Void in										// Export as a plain text .txt file
 			if result == NSFileHandlingPanelOKButton {
 				do {
 					
 					let range = NSMakeRange(0, self.UARTTextView.textStorage!.length)
 					let attribs = [NSDocumentTypeDocumentAttribute : NSPlainTextDocumentType]
-					let fileWrapper = try self.UARTTextView.textStorage!.fileWrapperFromRange(range, documentAttributes: attribs)
+					let fileWrapper = try self.UARTTextView.textStorage!.fileWrapper(from: range, documentAttributes: attribs)
 
 					do {
-						try fileWrapper.writeToURL(savePanel.URL!, options: .Atomic, originalContentsURL: nil)
+						try fileWrapper.write(to: savePanel.url!, options: .atomic, originalContentsURL: nil)
 					} catch let error as NSError {
 						savePanel.orderOut(nil)
 						self.view.window!.alert("File not saved", infoText: error.localizedDescription)
@@ -195,12 +195,12 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	// MARK: -
 	
 	// CBCentralManagerDelegate
-	func centralManagerDidUpdateState(manager: CBCentralManager) {
+	func centralManagerDidUpdateState(_ manager: CBCentralManager) {
 	
-		if manager.state == .PoweredOn {
-			let desiredServices = [CBUUID(string: CBUUID.UUIDs.UARTService.rawValue)]
+		if manager.state == .poweredOn {
+			let desiredServices = [CBUUID.UARTService]
 			// The CBCentralManagerScanOptionAllowDuplicatesKey parameter doesn't seem to have any effect (on 10.10.5) but set here as needed anyway
-			manager.scanForPeripheralsWithServices(desiredServices, options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])	// Find only one occurance when advertised. Chains to didDiscoverPeripheral
+			manager.scanForPeripherals(withServices: desiredServices, options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])	// Find only one occurance when advertised. Chains to didDiscoverPeripheral
 		} else {
 			self.view.window!.reportBLEStatus(manager)																			// Report an error
 		}
@@ -209,7 +209,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	
 	// CBCentralManagerDelegate
-	func centralManager(central: CBCentralManager, didDiscoverPeripheral peripheral: CBPeripheral, advertisementData: [String : AnyObject], RSSI: NSNumber) {
+	func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
 		
 		if verboseConsoleLog { NSLog("didDiscoverPeripheral: peripheral=\(peripheral), RSSI=\(RSSI) dBm, advertisementData=\(advertisementData)") }
 		
@@ -223,7 +223,7 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 			UARTRxCharacteristic = nil
 
 			peripheral.delegate = self
-			self.manager.connectPeripheral(peripheral, options: [CBConnectPeripheralOptionNotifyOnDisconnectionKey : true])		// Connect to the found Peripheral. Chains to didConnectPeripheral or didFailToConnectPeripheral
+			self.manager.connect(peripheral, options: [CBConnectPeripheralOptionNotifyOnDisconnectionKey : true])		// Connect to the found Peripheral. Chains to didConnectPeripheral or didFailToConnectPeripheral
 
 		}
 		
@@ -231,17 +231,17 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	
 	// CBCentralManagerDelegate
-	func centralManager(central: CBCentralManager, didConnectPeripheral peripheral: CBPeripheral) {
+	func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
 		
 		if verboseConsoleLog { NSLog("didConnectPeripheral: peripheral=\(peripheral)") }
 		
-		peripheral.discoverServices([CBUUID(string: CBUUID.UUIDs.UARTService.rawValue)])										// Chains to didDiscoverServices
+		peripheral.discoverServices([CBUUID.UARTService])										// Chains to didDiscoverServices
 		
 	}
 	
 	
 	// CBCentralManagerDelegate
-	func centralManager(central: CBCentralManager, didFailToConnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+	func centralManager(_ central: CBCentralManager, didFailToConnect peripheral: CBPeripheral, error: Error?) {
 		
 		if verboseConsoleLog { NSLog("didFailToConnectPeripheral: peripheral=\(peripheral), ERROR=\(error!)") }
 		
@@ -252,19 +252,21 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	
 	// CBCentralManagerDelegate
-	func centralManager(central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: NSError?) {
+	func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
 		
-		if verboseConsoleLog { NSLog("didDisconnectPeripheral: peripheral=\(peripheral), ERROR=\(error)") }
-		
-		if error != nil {
-			if error!.code == 6 {
-				self.view.window!.alert(peripheral.name! + " disconnected", infoText: "")
-			} else {
-				self.view.window!.alert("Peripheral disconnected", infoText: error!.localizedDescription)
+		if verboseConsoleLog {
+                        NSLog("didDisconnectPeripheral: peripheral=\(peripheral), ERROR=\(error)")
+                }
+
+                if let error = error {
+                        if let cbError = error as? CBError, cbError.code == .connectionTimeout {
+                                self.view.window!.alert(peripheral.name! + " disconnected", infoText: "")
+                        } else {
+                                self.view.window!.alert("Peripheral disconnected", infoText: error.localizedDescription)
 			}
 		}
 		
-		Peripheral.findPeripheral(peripheral.identifier).deviceDisabled = true													// Record a disconnected peripheral
+		Peripheral.findPeripheral(peripheral.identifier)?.deviceDisabled = true
 		UARTTxCharacteristic = nil
 		UARTRxCharacteristic = nil
 		
@@ -272,15 +274,15 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	
 	// CBPeripheralDelegate
-	func peripheral(peripheral: CBPeripheral, didDiscoverServices error: NSError?) {
+	func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
 		
 		if verboseConsoleLog { NSLog("didDiscoverServices: peripheral=\(peripheral)"); if error != nil { NSLog("ERROR=\(error!)") } }
 		
 		if error == nil {
 			
 			for aService in peripheral.services! {																				// Should be only 1 service - the one we asked for above
-				let desiredCharacteristics = [CBUUID(string: CBUUID.UUIDs.UARTTxCharacteristic.rawValue), CBUUID(string: CBUUID.UUIDs.UARTRxCharacteristic.rawValue)]
-				peripheral.discoverCharacteristics(desiredCharacteristics, forService: aService)								// Chains to didDiscoverCharacteristicsForService
+				let desiredCharacteristics = [CBUUID.UARTTxCharacteristic, CBUUID.UARTRxCharacteristic]
+				peripheral.discoverCharacteristics(desiredCharacteristics, for: aService)								// Chains to didDiscoverCharacteristicsForService
 			}
 			
 		} else {
@@ -291,14 +293,14 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	
 	// CBPeripheralDelegate
-	func peripheral(peripheral: CBPeripheral, didDiscoverCharacteristicsForService service: CBService, error: NSError?) {
+	func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
 		
 		if verboseConsoleLog { NSLog("didDiscoverCharacteristicsForService: peripheral=\(peripheral), service=\(service)"); if error != nil { NSLog("ERROR=\(error!)") } }
 		
 		for aCharacteristic in service.characteristics! {
-			if aCharacteristic.UUID.UUIDString == CBUUID.UUIDs.UARTRxCharacteristic.rawValue {
+			if aCharacteristic.uuid == CBUUID.UARTRxCharacteristic {
 				UARTRxCharacteristic = aCharacteristic
-			} else if aCharacteristic.UUID.UUIDString == CBUUID.UUIDs.UARTTxCharacteristic.rawValue {
+			} else if aCharacteristic.uuid == CBUUID.UARTTxCharacteristic {
 				UARTTxCharacteristic = aCharacteristic
 			}
 		}
@@ -307,42 +309,52 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	
 	// CBPeripheralDelegate
-	func peripheral(peripheral: CBPeripheral, didUpdateValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {	// Incoming text from device
+	func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {	// Incoming text from device
 		
 		if verboseConsoleLog {
-			var byteString = "n/a"																									// Default in case of error
-			if let value = characteristic.value { byteString = value.description }
-			NSLog("didUpdateValueForCharacteristic: peripheral=\(peripheral)")
-			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.UUID.characteristicNameForUUID()), bytes=\(byteString) \"\(byteString.hexToPrintableString())\"")
+                        let byteString: String
+                        let characteristicValue: String
+
+                        if let value = characteristic.value {
+                                byteString = value.lowercaseHexString
+                                characteristicValue = String.fromBTLE(utf8: value)
+                        } else {
+                                byteString = ""
+                                characteristicValue = "n/a"
+                        }
+
+                        NSLog("didUpdateValueForCharacteristic: peripheral=\(peripheral)")
+			NSLog("service=\(characteristic.service), characteristic=\(characteristic) \(characteristic.uuid.characteristicName), bytes=\(byteString) \"\(characteristicValue)\"")
 			if error != nil { NSLog("ERROR=\(error!)") }
 		}
 		
-		if characteristic.UUID.UUIDString == CBUUID.UUIDs.UARTRxCharacteristic.rawValue {											// Check to make sure this is our receive Characteristic. Should always pass
-			if let value = characteristic.value {																					// And check to make sure we have valid data. Should also always pass
-				
-				if verboseConsoleLog { let crText = value.description.stringByReplacingOccurrencesOfString("\n", withString: "•"); NSLog("receiving \"\(crText)\"") }
-				
-					// Insert received text & color it to indicate received text
-				if let receivedStr = NSString(data: value, encoding: NSString.defaultCStringEncoding()) as? String {
-					
-					let remoteGreenString = NSAttributedString(string: receivedStr, attributes: [NSForegroundColorAttributeName : NSColor(red: 0, green: 0.7, blue: 0, alpha: 1)])
-					self.UARTTextView.textStorage!.appendAttributedString(remoteGreenString)
-					
-					sendInsertionPosition = UARTTextView.string!.characters.count
-					
-					delayRunOnMainQ(0) {
-						self.UARTTextView.scrollRangeToVisible(NSMakeRange(self.sendInsertionPosition, 0))							// Must be run on main Q. We are called from another thread
-					}
+                guard characteristic.uuid == CBUUID.UARTRxCharacteristic else {
+                        assertionFailure("Unexpected received Characteristic")
+                        return
+                }
+                guard let value = characteristic.value else {
+                        assertionFailure("Expected data for UART Rx value")
+                        return
+                }
+                
+                let receivedString = String.fromBTLE(utf8: value)
+                
+                if verboseConsoleLog { let crText = receivedString.replacingOccurrences(of: "\n", with: "•"); NSLog("receiving \"\(crText)\"") }
+                
+                // Insert received text & color it to indicate received text
+                let remoteGreenString = NSAttributedString(string: receivedString, attributes: [NSForegroundColorAttributeName : NSColor(red: 0, green: 0.7, blue: 0, alpha: 1)])
+                
+                delayRunOnMainQ(0) {
+                        self.UARTTextView.textStorage!.append(remoteGreenString)
+                        
+                        self.sendInsertionPosition = self.UARTTextView.string!.characters.count
 
-				}
-			
-			}
-		}
-		
+                        self.UARTTextView.scrollRangeToVisible(NSMakeRange(self.sendInsertionPosition, 0))							// Must be run on main Q. We are called from another thread
+                }
 	}
 	
 	
-	func peripheral(peripheral: CBPeripheral, didWriteValueForCharacteristic characteristic: CBCharacteristic, error: NSError?) {
+	func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
 		
 		if verboseConsoleLog { NSLog("didWriteValueForCharacteristic: peripheral=\(peripheral)"); if error != nil { NSLog("ERROR=\(error!)") } }
 		
@@ -356,10 +368,10 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	// MARK:-
 	
 	// NSTextViewDelegate
-	func textView(textView: NSTextView, shouldChangeTextInRange affectedCharRange: NSRange, replacementString: String?) -> Bool {	// Outgoing text to device
+	func textView(_ textView: NSTextView, shouldChangeTextIn affectedCharRange: NSRange, replacementString: String?) -> Bool {	// Outgoing text to device
 		
 		if echoOutgoingTextBtn.state == NSOffState {																				// When echo is on, send the characters 1 at a time & don't display
-			sendString(replacementString!)
+			send(string: replacementString!)
 			return false
 		}
 		
@@ -372,12 +384,12 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 			sendInsertionPosition = textView.string!.characters.count+1
 			var sendText = textView.string![fromPosition..<sendInsertionPosition-1]
 			if alsoSendReturnBtn.state == NSOnState { sendText += "\n" }
-			sendString(sendText)
+			send(string: sendText)
 		}
 		
 		if replacementString!.characters.count != 0 {																				// Handle inserting local text so we can ensure it's blue
-			let localBlueString = NSAttributedString(string: replacementString!, attributes: [NSForegroundColorAttributeName : NSColor.blueColor()])
-			UARTTextView.textStorage!.appendAttributedString(localBlueString)
+			let localBlueString = NSAttributedString(string: replacementString!, attributes: [NSForegroundColorAttributeName : NSColor.blue])
+			UARTTextView.textStorage!.append(localBlueString)
 			UARTTextView.scrollRangeToVisible(NSMakeRange(sendInsertionPosition, 0))
 			return false
 		}
@@ -389,26 +401,37 @@ class DetailsViewController: NSViewController, CBCentralManagerDelegate, CBPerip
 	
 	// MARK:-
 	
-	private func sendString(strToSend: String) {
+	private func send(string: String) {
+                guard !string.isEmpty else {
+                        return
+                }
 		
-		if strToSend.characters.count == 0 { return }
+		if verboseConsoleLog {
+                        let crText = string.replacingOccurrences(of: "\n", with: "•");
+                        NSLog("sending \"\(crText)\"")
+                }
 		
-		if verboseConsoleLog { let crText = strToSend.stringByReplacingOccurrencesOfString("\n", withString: "•"); NSLog("sending \"\(crText)\"") }
-		
-		var writeType = CBCharacteristicWriteType.WithoutResponse																	// Default to 'peripheral doesnt support response'
-		if (UARTTxCharacteristic!.properties.rawValue & CBCharacteristicProperties.Write.rawValue) != 0 {							// If it responds, we'd rather have that
-			writeType = CBCharacteristicWriteType.WithResponse
-		}																															// And if it handles neither (not likely), we'll display an error message upon sending
-		
-		var start = 0																												// Send the data in max blocks of 20 chars as per the GATT Characteristic size limit
-		repeat {
-			var end = start + 19
-			if end >= strToSend.characters.count { end = strToSend.characters.count-1 }
-			let str = strToSend[start...end] as NSString
-			let data = NSData(bytes: str.UTF8String, length: str.length)
-			UARTPeripheral?.writeValue(data, forCharacteristic: UARTTxCharacteristic!, type: writeType)
-			start += 20
-		} while start < strToSend.characters.count
+                // Default to "peripheral doesn't support response"
+                var writeType = CBCharacteristicWriteType.withoutResponse
+                
+                // If it responds, we'd rather have that
+                // And if it handles neither (not likely), we'll display an error message upon sending
+                // TJW: Was this code intending to check for .withResponse?
+		if UARTTxCharacteristic!.properties.contains(.write) {
+			writeType = .withResponse
+                }
+                
+                // Send the data in max blocks of 20 chars as per the GATT Characteristic size limit
+                // TJW: My change here sends 20 *bytes* at a time instead of 20 characters. It is unclear, since there is no reference to documentation on the limit, if we really could send 20 characters (possibly many, many more bytes for non-ASCII characters). Of course, this means the receiver needs to recombine and validate UTF-8 sequences if they really want non-ASCII (probably should be doing that anyway).
+                let utf8Data = string.data(using: .utf8)!
+                let utf8Length = utf8Data.count
+
+                var sendIndex = 0;
+                while sendIndex < utf8Length {
+                        let sendLength = min(20, utf8Length - sendIndex)
+                        UARTPeripheral?.writeValue(utf8Data.subdata(in: sendIndex..<(sendIndex+sendLength)), for: UARTTxCharacteristic!, type: writeType)
+                        sendIndex += 20
+                }
 		
 	}
 	
